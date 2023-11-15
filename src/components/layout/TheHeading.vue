@@ -41,7 +41,11 @@
           <li class="nav-item"><a href="#" class="nav-link">플래너</a></li>
           <li class="nav-item"><a href="#" class="nav-link">게시판</a></li>
           <li class="nav-item"><a href="#" class="nav-link">공지사항</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">QnA</a></li>
+          <li class="nav-item">
+            <!-- <router-link ></router-link>
+            <a href="#" class="nav-link">QnA</a> -->
+            <router-link class="nav-link" :to="{ name: 'QnA' }">QnA</router-link>
+          </li>
         </ul>
         <ul class="nav nav-pills">
           <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
