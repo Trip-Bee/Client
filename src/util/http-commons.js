@@ -3,13 +3,18 @@ import { httpStatusCode } from './http-status';
 
 const { VITE_VUE_API_URL } = import.meta.env;
 
-// token을 이용한 처리 
+
+
+// local vue api axios instance
 function localAxios() {
     const instance = axios.create({
-        baseURL: VITE_VUE_API_URL
+        baseURL: VITE_VUE_API_URL,
+        // withCredentials: true,
+        // headers: {
+        //   "Content-Type": "application/json;charset=utf-8",
+        // },
     });
-
-    // Request 발생 시 적용할 내용
+    // Request 발생 시 적용할 내용.
     instance.defaults.headers.common['Authorization'] = '';
     instance.defaults.headers.post['Content-Type'] = 'application/json';
     instance.defaults.headers.patch['Content-Type'] = 'application/json';
@@ -19,10 +24,10 @@ function localAxios() {
     instance.interceptors.request.use((config) => {
         return config;
     }),
-    (error) => {
-        return Promise.reject(error);
+        (error) => {
+            return Promise.reject(error);
         };
-    
+
     // accessToken의 값이 유효하지 않은 경우,
     // refreshToken을 이용해 재발급 처리.
     // https://maruzzing.github.io/study/rnative/axios-interceptors%EB%A1%9C-%ED%86%A0%ED%81%B0-%EB%A6%AC%ED%94%84%EB%A0%88%EC%8B%9C-%ED%95%98%EA%B8%B0/
@@ -53,7 +58,7 @@ function localAxios() {
 
                     // 에러가 발생했던 컴포넌트의 axios로 이동하고자하는 경우
                     // 반드시 return을 붙여주어야한다.
-                    return await instance.post('/user/refresh').then((response) => {
+                    return await instance.post('/auth/reissue').then((response) => {
                         const newAccessToken = response.data.Authorization;
 
                         instance.defaults.headers.common['Authorization'] = newAccessToken;
