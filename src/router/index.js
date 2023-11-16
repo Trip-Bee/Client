@@ -11,6 +11,28 @@ const router = createRouter({
       component: MainView,
     },
     {
+      path: "/user",
+      name: "user",
+      component: () => import("@/views/TheUserView.vue"),
+      children: [
+        {
+          path: "login",
+          name: "user-login",
+          component: () => import("@/components/users/UserLogin.vue"),
+        },
+        {
+          path: "signup",
+          name: "user-signup",
+          component: () => import("@/components/users/UserRegister.vue"),
+        },
+        {
+          path: "mypage",
+          name: "user-mypage",
+          component: () => import("@/components/users/UserMyPage.vue"),
+        },
+      ],
+    },
+    {
       path: "/qna",
       name: "QnA",
       component: QnAView,
