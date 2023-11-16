@@ -1,4 +1,17 @@
-<script setup></script>
+<script setup>
+import { useMenuStore } from "@/stores/menu";
+import { storeToRefs } from "pinia";
+
+const menuStore = useMenuStore();
+const { menuList } = storeToRefs(menuStore);
+const { changeMenuState } = menuStore;
+console.log(menuList);
+
+const logout = () => {
+  console.log("로그아웃!!!");
+  changeMenuState();
+};
+</script>
 
 <template>
   <header class="p-3 mb-3">
@@ -48,8 +61,26 @@
           </li>
         </ul>
         <ul class="nav nav-pills">
-          <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Join</a></li>
+          <template v-for="menu in menuList" :key="menu.routeName">
+            <template v-if="menu.show">
+              <template v-if="menu.routeName === 'user-logout'">
+                <li class="nav-item">
+                  <router-link to="/" @click.prevent="logout" class="nav-link">{{
+                    menu.name
+                  }}</router-link>
+                </li>
+              </template>
+              <template v-else>
+                <li class="nav-item">
+                  <router-link :to="{ name: menu.routeName }" class="nav-link">{{
+                    menu.name
+                  }}</router-link>
+                </li>
+              </template>
+            </template>
+          </template>
+          <!-- <li class="nav-item"><a href="#" class="nav-link">Login</a></li> -->
+          <!-- <li class="nav-item"><a href="#" class="nav-link">Join</a></li> -->
         </ul>
       </div>
     </div>
