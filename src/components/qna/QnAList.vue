@@ -1,49 +1,29 @@
 <script setup>
 import { ref } from "vue";
 import QnAListItem from "./item/QnAListItem.vue";
+import { listPost } from "../../api/post.js";
 
-const items = [
-  {
-    id: 1,
-    title: "title test",
-    content: "content test",
-    nickname: "nickname test",
-    hit: 0,
-    createdAt: "2023-11-10",
-  },
-  {
-    id: 2,
-    title: "title test",
-    content: "content test",
-    nickname: "nickname test",
-    hit: 0,
-    createdAt: "2023-11-10",
-  },
-  {
-    id: 3,
-    title: "title test",
-    content: "content test",
-    nickname: "nickname test",
-    hit: 0,
-    createdAt: "2023-11-10",
-  },
-  {
-    id: 4,
-    title: "title test",
-    content: "content test",
-    nickname: "nickname test",
-    hit: 0,
-    createdAt: "2023-11-10",
-  },
-  {
-    id: 5,
-    title: "title test",
-    content: "content test",
-    nickname: "nickname test",
-    hit: 0,
-    createdAt: "2023-11-10",
-  },
-];
+const posts = ref([]);
+const currentPage = ref(0);
+const totalPage = ref(0);
+
+const getPostList = () => {
+  console.log("들어왔니");
+  listPost(
+    "qna",
+    ({ data }) => {
+      console.log(data.dataBody);
+      posts.value = data.dataBody;
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+};
+
+const temp = () => {
+  getPostList();
+};
 </script>
 
 <template>
@@ -103,22 +83,27 @@ const items = [
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in items" :key="item.id">
-                  <td class="text-center">{{ item.id }}</td>
+                <tr v-for="post in posts" :key="post.id">
+                  <td class="text-center">{{ post.id }}</td>
                   <td class="text-center">
                     <router-link
                       class="title text-decoration-none"
-                      :to="{ name: 'qna-view', params: { id: item.id } }"
-                      >{{ item.title }}</router-link
+                      :to="{ name: 'qna-view', params: { id: post.id } }"
+                      >{{ post.title }}</router-link
                     >
                   </td>
-                  <td class="text-center">{{ item.nickname }}</td>
-                  <td class="text-center">{{ item.hit }}</td>
-                  <td class="text-center">{{ item.createdAt }}</td>
+                  <td class="text-center">{{ post.nickname }}</td>
+                  <td class="text-center">{{ post.hit }}</td>
+                  <td class="text-center">{{ post.createdAt }}</td>
                 </tr>
               </tbody>
             </v-table>
-            <v-pagination class="mt-3 mb-10" :length="5"></v-pagination>
+            <v-pagination
+              class="mt-3 mb-10"
+              :length="5"
+              show-first-last-page="true"
+              @click="temp()"
+            ></v-pagination>
           </v-container>
         </v-container>
       </v-card>

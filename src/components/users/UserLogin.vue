@@ -1,40 +1,32 @@
 <script setup>
 import { ref } from "vue";
-import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-import { useMemberStore } from "@/stores/member";
-import { useMenuStore } from "@/stores/menu";
+// import { storeToRefs } from "pinia";
+// import { useRouter } from "vue-router";
+// import { useMemberStore } from "@/stores/member";
+// import { useMenuStore } from "@/stores/menu";
 
-const router = useRouter();
-const memberStore = useMemberStore();
-const menuStore = useMenuStore();
-const { isLogin, isLoginError, isValidToken } = storeToRefs(memberStore);
-const { userLogin } = memberStore;
-const { changeMenuState } = menuStore;
+// const router = useRouter();
+
+// const memberStore = useMemberStore();
+
+// const { isLogin } = storeToRefs(memberStore);
+// const { userLogin, getUserInfo } = memberStore;
+// const { changeMenuState } = useMenuStore();
 
 const loginUser = ref({
   email: "",
   password: "",
 });
 
-const login = async () => {
-  console.log("login ing!!!! !!!");
-  console.log(loginUser.value);
-  await userLogin(loginUser.value);
-  // let
-  // changeMenuState();
-  // let token = sessionStorage.getItem('accessToken');
-  let token = localStorage.getItem("accessToken");
-  console.log("access token : ", token);
-  console.log("isLogin: ", isLogin);
-
-  if (isLogin) {
-    console.log("로그인 성공");
-    changeMenuState();
-  }
-
-  router.push("/home");
-};
+// const login = async () => {
+//   await userLogin(loginUser.value);
+//   let token = sessionStorage.getItem("accessToken");
+//   if (isLogin) {
+//     getUserInfo(token);
+//     changeMenuState();
+//   }
+//   router.push("/");
+// };
 </script>
 
 <template>
@@ -59,6 +51,7 @@ const login = async () => {
         </div>
 
         <v-text-field
+          v-model="loginUser.email"
           density="compact"
           placeholder="Email address"
           prepend-inner-icon="$email"
@@ -81,6 +74,7 @@ const login = async () => {
         </div>
 
         <v-text-field
+          v-model="loginUser.password"
           :append-inner-icon="visible ? '$eyeOff' : '$eye'"
           :type="visible ? 'text' : 'password'"
           density="compact"
