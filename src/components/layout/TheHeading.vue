@@ -16,7 +16,7 @@ const logout = () => {
 </script>
 
 <template>
-  <div class="mt-10">
+  <v-container class="mt-10 pa-0">
     <div class="d-flex flex-wrap align-center justify-space-between">
       <div></div>
       <a href="/" class="d-flex justiry-center">
@@ -30,7 +30,7 @@ const logout = () => {
       <ProfileItem></ProfileItem>
     </div>
     <NavItem class="mt-8"></NavItem>
-  </div>
+  </v-container>
 </template>
 
 <style scoped></style>
