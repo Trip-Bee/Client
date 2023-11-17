@@ -2,36 +2,46 @@
 import { ref } from "vue";
 
 const items = ref([
-  { value: "spot", name: "여행지" },
-  { value: "plan", name: "플래너" },
-  { value: "board", name: "게시판" },
-  { value: "notice", name: "공지사항" },
-  { value: "qna", name: "QnA" },
-  { value: "login", name: "로그인" },
-  { value: "join", name: "회원가입" },
+  { value: "spot", title: "여행지", name: "" },
+  { value: "plan", title: "플래너", name: "" },
+  { value: "board", title: "게시판", name: "" },
+  { value: "notice", title: "공지사항", name: "" },
+  { value: "qna", title: "QnA", name: "qna-list" },
+  { value: "login", title: "로그인", name: "" },
+  { value: "join", title: "회원가입", name: "" },
 ]);
 </script>
 
 <template>
-  <div class="nav mt-6 elevation-2 rounded mb-10">
+  <div class="nav mt-6 elevation-2 rounded mb-6">
     <v-row>
       <v-col class="d-flex justify-space-between">
         <div>
-          <v-btn
-            class="font-weight-black"
-            variant="plain"
-            rounded="lg"
+          <router-link
+            :to="{ name: items[i - 1].name }"
             v-for="i in 5"
-            >{{ items[i - 1].name }}</v-btn
+            tag="v-btn"
+            ><v-btn
+              class="font-weight-black"
+              variant="plain"
+              rounded="lg"
+              color="black"
+              >{{ items[i - 1].title }}</v-btn
+            ></router-link
           >
         </div>
         <div>
-          <v-btn
-            class="font-weight-black"
-            variant="plain"
-            rounded="lg"
+          <router-link
+            :to="{ name: items[4 + i].name }"
             v-for="i in 2"
-            >{{ items[4 + i].name }}</v-btn
+            tag="v-btn"
+            ><v-btn
+              class="font-weight-black"
+              variant="plain"
+              rounded="lg"
+              color="black"
+              >{{ items[4 + i].title }}</v-btn
+            ></router-link
           >
         </div>
       </v-col>

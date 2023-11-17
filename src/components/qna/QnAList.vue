@@ -1,9 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import QnAListItem from "./item/QnAListItem.vue";
-import PageNavigation from "../common/PageNavigation.vue";
 
-const qnaList = [
+const items = [
   {
     id: 1,
     title: "title test",
@@ -45,100 +44,91 @@ const qnaList = [
     createdAt: "2023-11-10",
   },
 ];
-
-const currentPage = ref(1);
-const totalPage = ref(30);
-const param = ref({
-  pgno: currentPage.value,
-  spp: 20,
-  key: "",
-  word: "",
-});
-
-const onPageChange = (val) => {
-  console.log(val + "번 페이지로 이동 준비 끝!!!");
-  currentPage.value = val;
-  param.value.pgno = val;
-};
 </script>
 
 <template>
-  <div class="container">
-    <div class="pt-5 pb-3 w-75 m-auto">
-      <div class="d-flex justify-content-end">
-        <router-link
-          :to="{ name: 'qna-write' }"
-          class="btn btn-outline-success mb-3"
-        >
-          글쓰기</router-link
-        >
-      </div>
-      <div class="col-md-7 offset-3">
-        <form class="d-flex" id="form-search" action="">
-          <input type="hidden" name="action" value="list" />
-          <input type="hidden" name="pgno" value="1" />
-          <select
-            name="key"
-            id="key"
-            class="form-select form-select-sm ms-5 me-1 w-50"
-            aria-label="검색조건"
-          >
-            <option value="" selected>검색조건</option>
-            <option value="article_no">글번호</option>
-            <option value="subject">제목</option>
-            <option value="user_id">작성자</option>
-          </select>
-          <div class="input-group input-group-sm">
-            <input
-              type="text"
-              name="word"
-              id="word"
-              class="form-control"
-              placeholder="검색어..."
-            />
-            <button id="btn-search" class="btn btn-dark" type="button">
-              검색
-            </button>
-          </div>
-        </form>
-      </div>
-      <table class="table table-hover">
-        <thead>
-          <tr class="text-center">
-            <th scope="col">글번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">조회수</th>
-            <th scope="col">작성일</th>
-          </tr>
-        </thead>
-        <tbody class="post-list" id="board-body">
-          <QnAListItem
-            v-for="qna in qnaList"
-            :key="qna.id"
-            :qna="qna"
-          ></QnAListItem>
-        </tbody>
-      </table>
-    </div>
-    <!-- <PageNavigation
-      :current-page="currentPage"
-      :total-page="totalPage"
-      @pageChange="onPageChange"
-    ></PageNavigation> -->
-    <nav
-      aria-label="Page navigation example"
-      class="d-flex justify-content-center"
+  <v-container class="pa-0 pt-1">
+    <v-sheet
+      class="d-flex flex-wrap justify-center"
+      :elevation="2"
+      border
+      rounded
     >
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      </ul>
-    </nav>
-  </div>
+      <v-container class="w-75 d-flex flex-wrap justify-center">
+        <v-container
+          class="search pa-0 mt-8 w-50 d-flex align-start justify-end"
+        >
+          <v-select
+            class="search-type"
+            label="검색조건"
+            :items="['ID', '제목', '작성자']"
+            variant="outlined"
+            density="compact"
+          ></v-select>
+          <v-text-field
+            class="search-input ms-2"
+            density="compact"
+            variant="solo"
+            append-inner-icon="$magnify"
+            single-line
+            hide-details
+            @click:append-inner="onClick"
+          ></v-text-field>
+        </v-container>
+        <v-container class="pa-0 d-flex justify-end align-end">
+          <router-link :to="{ name: 'qna-write' }" tag="v-btn"
+            ><v-btn
+              class="font-weight-black"
+              variant="outlined"
+              rounded="md"
+              color="black"
+              elevation="2"
+              >글쓰기</v-btn
+            ></router-link
+          >
+        </v-container>
+        <v-container class="pa-0 pt-3">
+          <v-table hover="true">
+            <thead class="elevation-2">
+              <tr>
+                <th class="text-center text-white">ID</th>
+                <th class="text-center text-white w-50">제목</th>
+                <th class="text-center text-white">작성자</th>
+                <th class="text-center text-white">조회수</th>
+                <th class="text-center text-white">작성일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in items" :key="item.id">
+                <td class="text-center">{{ item.id }}</td>
+                <td class="text-center">{{ item.title }}</td>
+                <td class="text-center">{{ item.nickname }}</td>
+                <td class="text-center">{{ item.hit }}</td>
+                <td class="text-center">{{ item.createdAt }}</td>
+              </tr>
+            </tbody>
+          </v-table>
+          <v-pagination class="mt-3 mb-10" :length="5"></v-pagination>
+        </v-container>
+      </v-container>
+    </v-sheet>
+  </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+th {
+  background-color: #424242;
+}
+
+.search {
+  height: 0%;
+}
+
+.search-type {
+  width: 30%;
+}
+
+.search-input {
+  width: 70%;
+}
+</style>

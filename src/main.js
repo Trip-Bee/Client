@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
-
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 import App from "./App.vue";
 import router from "./router";
@@ -10,7 +9,7 @@ import router from "./router";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
-import * as styles from "vuetify/styles";
+import * as styles from "vuetify/styles?main.css";
 
 // vurify icon
 import "material-design-icons-iconfont/dist/material-design-icons.css";
@@ -24,6 +23,8 @@ import {
   mdiInstagram,
   mdiLinkedin,
   mdiGithub,
+  mdiChevronRight,
+  mdiMagnify,
 } from "@mdi/js";
 
 const vuetify = createVuetify({
@@ -39,6 +40,8 @@ const vuetify = createVuetify({
       instagram: mdiInstagram,
       linkedin: mdiLinkedin,
       github: mdiGithub,
+      chevronRight: mdiChevronRight,
+      magnify: mdiMagnify,
     },
     sets: {
       mdi,
