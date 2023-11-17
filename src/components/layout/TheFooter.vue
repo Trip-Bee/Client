@@ -7,9 +7,9 @@ const icons = ["$facebook", "$twitter", "$instagram", "$linkedin", "$github"];
 </script>
 
 <template>
-  <v-container class="footer pa-0">
+  <v-container class="footer pa-0 pb-8">
     <v-divider class="mt-5 border-opacity-75"></v-divider>
-    <div class="d-flex justify-space-between mt-4 mb-3">
+    <div class="d-flex justify-space-between mt-4 mb-3 ms-1">
       <div class="color-bg-grey-lighten-1">
         <strong>© {{ new Date().getFullYear() }} — Company, Inc</strong>
       </div>

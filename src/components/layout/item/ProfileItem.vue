@@ -16,7 +16,11 @@ const user = ref({
   <v-menu>
     <template v-slot:activator="{ props }">
       <v-btn icon="mdi-dots-vertical" v-bind="props">
-        <v-img src="src/assets/img/profile.png" alt="logo" :width="37"></v-img>
+        <v-img
+          src="../../src/assets/img/profile.png"
+          alt="logo"
+          :width="37"
+        ></v-img>
       </v-btn>
     </template>
     <v-card class="mx-auto" width="256">

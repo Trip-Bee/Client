@@ -21,8 +21,8 @@ const logout = () => {
       <div></div>
       <a href="/" class="d-flex justiry-center">
         <v-img
+          src="../../src/assets/img/logo.png"
           class="d-flex"
-          src="src/assets/img/logo.png"
           alt="logo"
           :width="200"
         ></v-img>
