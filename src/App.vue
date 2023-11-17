@@ -5,9 +5,11 @@ import TheFooter from "./components/layout/TheFooter.vue";
 
 <template>
   <v-layout ref="app" class="d-flex flex-wrap justify-center">
-    <TheHeading></TheHeading>
-    <router-view></router-view>
-    <TheFooter></TheFooter>
+    <v-container class="pa-0 w-75">
+      <TheHeading></TheHeading>
+      <router-view></router-view>
+      <TheFooter></TheFooter>
+    </v-container>
   </v-layout>
 </template>
 

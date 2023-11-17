@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import MainView from "@/views/MainView.vue";
-import QnAView from "@/views/QnAView.vue";
+import TheMainView from "@/views/TheMainView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,12 +7,12 @@ const router = createRouter({
     {
       path: "/",
       name: "main",
-      component: MainView,
+      component: TheMainView,
     },
     {
       path: "/home",
       name: "home",
-      component: MainView,
+      component: TheMainView,
     },
     {
       path: "/user",
@@ -40,7 +39,7 @@ const router = createRouter({
     {
       path: "/qna",
       name: "QnA",
-      component: QnAView,
+      component: () => import("@/views/TheQnAView.vue"),
       redirect: { name: "qna-list" },
       children: [
         {

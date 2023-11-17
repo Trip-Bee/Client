@@ -25,6 +25,11 @@ import {
   mdiGithub,
   mdiChevronRight,
   mdiMagnify,
+  mdiEyeOff,
+  mdiEye,
+  mdiEmailOutline,
+  mdiLockOutline,
+  mdiCardTextOutline,
 } from "@mdi/js";
 
 const vuetify = createVuetify({
@@ -42,6 +47,11 @@ const vuetify = createVuetify({
       github: mdiGithub,
       chevronRight: mdiChevronRight,
       magnify: mdiMagnify,
+      eyeOff: mdiEyeOff,
+      eye: mdiEye,
+      email: mdiEmailOutline,
+      lock: mdiLockOutline,
+      card: mdiCardTextOutline,
     },
     sets: {
       mdi,

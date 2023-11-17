@@ -7,8 +7,8 @@ const items = ref([
   { value: "board", title: "게시판", name: "" },
   { value: "notice", title: "공지사항", name: "" },
   { value: "qna", title: "QnA", name: "qna-list" },
-  { value: "login", title: "로그인", name: "" },
-  { value: "join", title: "회원가입", name: "" },
+  { value: "login", title: "로그인", name: "user-login" },
+  { value: "signup", title: "회원가입", name: "user-signup" },
 ]);
 </script>
 
