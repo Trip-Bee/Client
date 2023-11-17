@@ -1,40 +1,35 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+
+const links = ["Home", "About Us", "Team", "Services", "Blog", "Contact Us"];
+
+const icons = ["$facebook", "$twitter", "$instagram", "$linkedin", "$github"];
+</script>
 
 <template>
-  <div class="container">
-    <footer
-      class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
-    >
-      <div class="col-md-4 d-flex align-items-center">
-        <span class="mb-3 mb-md-0 text-body-secondary"
-          >© 2023 Company, Inc</span
-        >
+  <v-container class="footer pa-0">
+    <v-divider class="mt-5 border-opacity-75"></v-divider>
+    <div class="d-flex justify-space-between mt-4 mb-3">
+      <div class="color-bg-grey-lighten-1">
+        <strong>© {{ new Date().getFullYear() }} — Company, Inc</strong>
       </div>
-
-      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li class="ms-3">
-          <a class="text-body-secondary" href="#"
-            ><i class="bi bi-github"></i
-          ></a>
-        </li>
-        <li class="ms-3">
-          <a class="text-body-secondary" href="#"
-            ><i class="bi bi-twitter"></i
-          ></a>
-        </li>
-        <li class="ms-3">
-          <a class="text-body-secondary" href="#"
-            ><i class="bi bi-instagram"></i
-          ></a>
-        </li>
-        <li class="ms-3">
-          <a class="text-body-secondary" href="#"
-            ><i class="bi bi-facebook"></i
-          ></a>
-        </li>
-      </ul>
-    </footer>
-  </div>
+      <div></div>
+      <div>
+        <v-btn
+          v-for="icon in icons"
+          :key="icon"
+          class="mx-1"
+          :icon="icon"
+          variant="text"
+          size="small"
+        ></v-btn>
+      </div>
+    </div>
+  </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.footer {
+  color: #757575;
+}
+</style>

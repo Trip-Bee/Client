@@ -4,11 +4,11 @@ import TheFooter from "./components/layout/TheFooter.vue";
 </script>
 
 <template>
-  <div>
+  <v-layout ref="app" class="d-flex flex-wrap justify-center">
     <TheHeading></TheHeading>
     <router-view></router-view>
     <TheFooter></TheFooter>
-  </div>
+  </v-layout>
 </template>
 
 <style scoped></style>
