@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TheMainView from "@/views/TheMainView.vue";
+import { useMemberStore } from "../stores/member";
+import { storeToRefs } from "pinia";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,11 +10,17 @@ const router = createRouter({
       path: "/",
       name: "main",
       component: TheMainView,
-    },
-    {
-      path: "/home",
-      name: "home",
-      component: TheMainView,
+      beforeEnter: (to, from, next) => {
+        const memberStore = useMemberStore();
+
+        const { isAuthenticated } = storeToRefs(memberStore);
+
+        if (!isAuthenticated) {
+          next("/user/login");
+        } else {
+          next();
+        }
+      },
     },
     {
       path: "/user",

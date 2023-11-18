@@ -1,32 +1,43 @@
 <script setup>
 import { ref } from "vue";
-// import { storeToRefs } from "pinia";
-// import { useRouter } from "vue-router";
-// import { useMemberStore } from "@/stores/member";
-// import { useMenuStore } from "@/stores/menu";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+import { useMenuStore } from "@/stores/menu";
+import { useCookies } from "vue3-cookies";
+// import { useTokenStore } from "@/stores/token";
 
-// const router = useRouter();
-
-// const memberStore = useMemberStore();
-
-// const { isLogin } = storeToRefs(memberStore);
-// const { userLogin, getUserInfo } = memberStore;
-// const { changeMenuState } = useMenuStore();
+const { cookies } = useCookies();
+const router = useRouter();
+const memberStore = useMemberStore();
+const menuStore = useMenuStore();
+// const tokenStore = useTokenStore();
+const { isAuthenticated } = storeToRefs(memberStore);
+const { getAccessToken } = memberStore;
+const { userLogin, getUserInfo } = memberStore;
+const { changeMenuState } = menuStore;
+// const { getAccessToken } = tokenStore;
 
 const loginUser = ref({
   email: "",
   password: "",
 });
 
-// const login = async () => {
-//   await userLogin(loginUser.value);
-//   let token = sessionStorage.getItem("accessToken");
-//   if (isLogin) {
-//     getUserInfo(token);
-//     changeMenuState();
-//   }
-//   router.push("/");
-// };
+const login = async () => {
+  console.log("loginUser", loginUser.value);
+  await userLogin(loginUser.value);
+  //   let token = cookies.get("accessToken");
+  let token = getAccessToken();
+  console.log("after userLogin token", token);
+  console.log("isAuthentciated", isAuthenticated.value);
+
+  if (isAuthenticated.value) {
+    await getUserInfo(token);
+    changeMenuState();
+  }
+
+  router.push("/");
+};
 </script>
 
 <template>
@@ -90,6 +101,7 @@ const loginUser = ref({
           color="#424242"
           size="large"
           variant="elevated"
+          @click.prevent="login"
         >
           로그인
         </v-btn>
