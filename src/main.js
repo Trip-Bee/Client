@@ -1,5 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { useMemberStore } from "./stores/member";
+import VueCookies from "vue3-cookies";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 import App from "./App.vue";
@@ -68,6 +70,9 @@ pinia.use(piniaPluginPersistedstate);
 
 app.use(pinia);
 app.use(router);
+
+const memberStore = useMemberStore();
+memberStore.isLogin(); // 애플리케이션 시작 시 로그인 상태 확인
 
 // app.mount("#app");
 app.use(vuetify).mount("#app");

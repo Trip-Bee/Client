@@ -2,22 +2,43 @@
 import { defineProps } from "vue";
 
 const props = defineProps({
-  qna: Object,
+  post: Object,
 });
 </script>
 
 <template>
-  <tr class="text-center">
-    <th scope="row">{{ qna.id }}</th>
+  <tr>
+    <td class="text-center">{{ post.id }}</td>
+    <td class="text-center">
+      <router-link
+        class="title text-decoration-none"
+        :to="{ name: 'qna-view', params: { id: post.id } }"
+        >{{ post.title }}</router-link
+      >
+    </td>
+    <td class="text-center">{{ post.nickname }}</td>
+    <td class="text-center">{{ post.hit }}</td>
+    <td class="text-center">{{ post.createdAt }}</td>
+  </tr>
+  <!-- <tr class="text-center">
+    <th scope="row">{{ post.id }}</th>
     <td>
-      <router-link :to="{ name: 'qna-view', params: { id: qna.id } }">
-        {{ qna.title }}
+      <router-link :to="{ name: 'qna-view', params: { id: post.id } }">
+        {{ post.title }}
       </router-link>
     </td>
-    <td>{{ qna.nickname }}</td>
-    <td>{{ qna.hit }}</td>
-    <td>{{ qna.createdAt }}</td>
-  </tr>
+    <td>{{ post.nickname }}</td>
+    <td>{{ post.hit }}</td>
+    <td>{{ post.createdAt }}</td>
+  </tr> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+tr > td:nth-child(1) {
+  font-weight: bold;
+}
+
+.title {
+  color: #424242;
+}
+</style>

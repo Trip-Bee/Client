@@ -1,5 +1,14 @@
 <script setup>
 import { ref } from "vue";
+import { useMemberStore } from "../../../stores/member";
+import { storeToRefs } from "pinia";
+import router from "../../../router";
+
+const memberStore = useMemberStore();
+const { userLogout } = memberStore;
+const { isAuthenticated } = storeToRefs(memberStore);
+
+console.log("profile " + isAuthenticated.value);
 
 const items = ref([
   { icon: `$account`, value: "mypage", name: "MyPage" },
@@ -10,6 +19,16 @@ const user = ref({
   nickname: "nickname",
   email: "test@ssafy.com",
 });
+
+const logout = async () => {
+  console.log("로그아웃!!!");
+  await userLogout();
+  changeMenuState();
+
+  // initMenu(isAuthentciated.value);
+
+  router.push("/");
+};
 </script>
 
 <template>

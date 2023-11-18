@@ -1,28 +1,50 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import QnAListItem from "./item/QnAListItem.vue";
 import { listPost } from "../../api/post.js";
 
 const posts = ref([]);
+
 const currentPage = ref(0);
 const totalPage = ref(0);
+const pageSize = ref(0);
 
-const getPostList = () => {
-  console.log("들어왔니");
+const searchKey = ref("");
+const searchWord = ref("");
+
+const items = ref([
+  { text: "ID", value: "id" },
+  { text: "제목", value: "title" },
+  { text: "작성자", value: "nickname" },
+]);
+
+onBeforeMount(() => {
+  getPostList(1, 5, "title", "test");
+});
+
+const getPostList = (page, size, key, word) => {
+  console.log(searchKey);
   listPost(
-    "qna",
+    {
+      category: "qna",
+      page: page,
+      size: size,
+      key: key,
+      word: word,
+    },
     ({ data }) => {
       console.log(data.dataBody);
-      posts.value = data.dataBody;
+      posts.value = data.dataBody.data;
+      currentPage.value = data.dataBody.currentPage;
+      totalPage.value = data.dataBody.totalPage;
+      pageSize.value = data.dataBody.size;
+      searchKey.value = data.dataBody.key;
+      searchWord.value = data.dataBody.word;
     },
     (error) => {
       console.error(error);
     }
   );
-};
-
-const temp = () => {
-  getPostList();
 };
 </script>
 
@@ -44,9 +66,12 @@ const temp = () => {
             <v-select
               class="search-type"
               label="검색조건"
-              :items="['ID', '제목', '작성자']"
+              :items="items"
+              item-title="text"
+              item-value="value"
               variant="outlined"
               density="compact"
+              v-model="searchKey"
             ></v-select>
             <v-text-field
               class="search-input ms-2"
@@ -56,7 +81,9 @@ const temp = () => {
               append-inner-icon="$magnify"
               single-line
               hide-details
-              @click:append-inner="onClick"
+              v-model="searchWord"
+              clearable
+              @click:prependInner="getPostList(currentPage, size, key, word)"
             ></v-text-field>
           </v-container>
           <v-container class="pa-0 d-flex justify-end align-end">
@@ -82,27 +109,16 @@ const temp = () => {
                   <th class="text-center text-white">작성일</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="post in posts" :key="post.id">
-                  <td class="text-center">{{ post.id }}</td>
-                  <td class="text-center">
-                    <router-link
-                      class="title text-decoration-none"
-                      :to="{ name: 'qna-view', params: { id: post.id } }"
-                      >{{ post.title }}</router-link
-                    >
-                  </td>
-                  <td class="text-center">{{ post.nickname }}</td>
-                  <td class="text-center">{{ post.hit }}</td>
-                  <td class="text-center">{{ post.createdAt }}</td>
-                </tr>
+              <tbody v-for="post in posts" :key="post.id">
+                <QnAListItem :post="post"></QnAListItem>
               </tbody>
             </v-table>
             <v-pagination
               class="mt-3 mb-10"
-              :length="5"
+              :length="totalPage"
               show-first-last-page="true"
-              @click="temp()"
+              @click="getPostList(currentPage, size, key, word)"
+              v-model="currentPage"
             ></v-pagination>
           </v-container>
         </v-container>
@@ -126,13 +142,5 @@ th {
 
 .search-input {
   width: 70%;
-}
-
-tr > td:nth-child(1) {
-  font-weight: bold;
-}
-
-.title {
-  color: #424242;
 }
 </style>
