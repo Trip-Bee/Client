@@ -7,7 +7,7 @@ const posts = ref([]);
 
 const currentPage = ref(0);
 const totalPage = ref(0);
-const pageSize = ref(0);
+const pageSize = ref(10);
 
 const searchKey = ref("");
 const searchWord = ref("");
@@ -19,11 +19,15 @@ const items = ref([
 ]);
 
 onBeforeMount(() => {
-  getPostList(1, 5, "title", "test");
+  getPostList(
+    currentPage.value,
+    pageSize.value,
+    searchKey.value,
+    searchWord.value
+  );
 });
 
 const getPostList = (page, size, key, word) => {
-  console.log(searchKey);
   listPost(
     {
       category: "qna",
@@ -33,7 +37,6 @@ const getPostList = (page, size, key, word) => {
       word: word,
     },
     ({ data }) => {
-      console.log(data.dataBody);
       posts.value = data.dataBody.data;
       currentPage.value = data.dataBody.currentPage;
       totalPage.value = data.dataBody.totalPage;
@@ -83,7 +86,9 @@ const getPostList = (page, size, key, word) => {
               hide-details
               v-model="searchWord"
               clearable
-              @click:prependInner="getPostList(currentPage, size, key, word)"
+              @click:appendInner="
+                getPostList(1, pageSize, searchKey, searchWord)
+              "
             ></v-text-field>
           </v-container>
           <v-container class="pa-0 d-flex justify-end align-end">
@@ -117,7 +122,7 @@ const getPostList = (page, size, key, word) => {
               class="mt-3 mb-10"
               :length="totalPage"
               show-first-last-page="true"
-              @click="getPostList(currentPage, size, key, word)"
+              @click="getPostList(currentPage, pageSize, searchKey, searchWord)"
               v-model="currentPage"
             ></v-pagination>
           </v-container>
