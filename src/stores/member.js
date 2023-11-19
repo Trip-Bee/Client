@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "vue3-cookies";
-import { userConfirm, logout, tokenRegeneration } from "@/api/auth";
+import { userConfirm, logout, tokenRegeneration, signupApi } from "@/api/auth";
 import { findById } from "@/api/user";
 import { httpStatusCode } from "@/util/http-status";
 import { useMenuStore } from "./menu";
@@ -12,11 +12,29 @@ const { cookies } = useCookies();
 
 export const useMemberStore = defineStore("memberStore", () => {
   const router = useRouter();
-
+  const isSignup = ref(false);
   const isAuthenticated = ref(false);
   const isLoginError = ref(false);
   const userInfo = ref(null);
   const isValidToken = ref(false);
+
+  const userSignup = async (signupUser) => {
+    console.log("enter signup", signupUser);
+    await signupApi(
+      signupUser,
+      (response) => {
+        console.log(response);
+        if (response.status === httpStatusCode.OK) {
+          isSignup.value = true;
+        } else {
+          isSignup.value = false;
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  };
 
   const userLogin = async (loginUser) => {
     console.log("enter userLogin", loginUser);
@@ -244,6 +262,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     isLoginError,
     userInfo,
     isValidToken,
+    isSignup,
     userLogin,
     getUserInfo,
     tokenRegenerate,
@@ -251,5 +270,6 @@ export const useMemberStore = defineStore("memberStore", () => {
     getRefreshToken,
     isLogin,
     userLogout,
+    userSignup,
   };
 });
