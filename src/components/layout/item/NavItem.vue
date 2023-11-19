@@ -11,7 +11,7 @@ const menuStore = useMenuStore();
 const { userItems } = storeToRefs(menuStore);
 const { initMenu } = menuStore;
 
-watch(isAuthenticated.value, (newValue, oldValue) => {
+watch(isAuthenticated, (newValue, oldValue) => {
   initMenu();
 });
 

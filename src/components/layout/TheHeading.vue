@@ -7,17 +7,12 @@ import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
 const { isAuthenticated } = storeToRefs(memberStore);
-
-console.log("heading " + isAuthenticated.value);
-watch(isAuthenticated, (newValue, oldValue) => {
-  console.log(`heading watch ${oldValue} ${newValue}`);
-});
 </script>
 
 <template>
   <v-container class="mt-10 pa-0">
     <div class="d-flex flex-wrap align-center justify-space-between">
-      <div :class="{ notVisible: isAuthenticated }">aaaa</div>
+      <div></div>
       <a href="/" class="d-flex justiry-center">
         <v-img
           src="../../src/assets/img/logo.png"
@@ -26,7 +21,7 @@ watch(isAuthenticated, (newValue, oldValue) => {
           :width="200"
         ></v-img>
       </a>
-      <div :class="{ notVisible: isAuthenticated }">
+      <div :class="{ notVisible: !isAuthenticated, visible: isAuthenticated }">
         <ProfileItem></ProfileItem>
       </div>
     </div>
@@ -37,5 +32,8 @@ watch(isAuthenticated, (newValue, oldValue) => {
 <style scoped>
 .notVisible {
   visibility: hidden;
+}
+.Visible {
+  visibility: visible;
 }
 </style>
