@@ -5,7 +5,6 @@ const local = localAxios();
 
 async function userConfirm(param, success, fail) {
   console.log("param", param);
-  // const url = "http://localhost:8080/api/auth/login";
   const instance = axios.create({
     withCredentials: true,
     baseURL: VITE_VUE_API_URL,
@@ -16,6 +15,12 @@ async function userConfirm(param, success, fail) {
   await instance.post("/auth/login", param).then(success).catch(fail);
 
   console.log("userConfirm ok");
+}
+
+async function signupApi(signupUser, success, fail) {
+  console.log("signup api", signupUser);
+  await local.post("/auth/signup", signupUser).then(success).catch(fail);
+  console.log("signup ok");
 }
 
 async function tokenRegeneration(token, success, fail) {
@@ -30,4 +35,4 @@ async function logout(token, success, fail) {
   await local.post(`/auth/logout`).then(success).catch(fail);
 }
 
-export { userConfirm, tokenRegeneration, logout };
+export { userConfirm, tokenRegeneration, logout, signupApi };
