@@ -1,16 +1,40 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
+import { writePost } from "../../api/post.js";
+
+const router = useRouter();
 
 const { handleSubmit, handleReset } = useForm({
-  validationSchema: {},
+  validationSchema: {
+    title(value) {
+      if (value?.length > 0) return true;
+
+      return "Title을 입력하세요.";
+    },
+    content(value) {
+      if (value?.length > 0) return true;
+
+      return "Content를 입력하세요.";
+    },
+  },
 });
 
 const title = useField("title");
 const content = useField("content");
 
 const submit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2));
+  const param = { category: "qna", post: values };
+  writePost(
+    param,
+    ({ data }) => {
+      router.replace({ name: "qna-list" });
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
 });
 </script>
 
@@ -35,17 +59,17 @@ const submit = handleSubmit((values) => {
           <div class="mt-8">
             <v-text-field
               v-model="title.value.value"
+              :error-messages="title.errorMessage.value"
               :counter="30"
               label="Title"
-              required
               variant="solo"
             ></v-text-field>
 
             <v-textarea
               v-model="content.value.value"
+              :error-messages="content.errorMessage.value"
               label="Content"
               variant="solo"
-              required
               rows="10"
               row-height="15"
               no-resize
@@ -57,7 +81,7 @@ const submit = handleSubmit((values) => {
               class="write-btn mt-4 mb-16 font-weight-bold"
               color="#424242"
               variant="elevated"
-              type="submit"
+              @click="submit()"
             >
               작성
             </v-btn>
@@ -73,27 +97,6 @@ const submit = handleSubmit((values) => {
           </v-container>
         </form>
       </v-card>
-      <!-- <v-container>
-        <form @submit.prevent="submit">
-          <v-text-field
-            v-model="title.value.value"
-            :counter="30"
-            label="Title"
-            required
-          ></v-text-field>
-
-          <v-textarea
-            clearable
-            label="Content"
-            variant="solo"
-            required
-          ></v-textarea>
-
-          <v-btn class="me-4" type="submit"> submit </v-btn>
-
-          <v-btn @click="handleReset"> clear </v-btn>
-        </form>
-      </v-container> -->
     </v-sheet></v-container
   >
 </template>
