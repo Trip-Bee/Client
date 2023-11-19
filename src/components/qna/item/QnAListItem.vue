@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from "vue";
+import { ref, defineProps, onBeforeMount } from "vue";
 
 const props = defineProps({
   post: Object,

@@ -37,15 +37,26 @@ function writePost(param, success, fail) {
     .catch(fail);
 }
 
-function detailPost(param, success, fail) {
+function modifyPost(param, success, fail) {
+  const token = getAccessToken();
+  const body = {
+    id: param.post.postId,
+    writerId: writerId,
+    title: param.post.title,
+    content: param.post.content,
+  };
   local
-    .get(`/${param.category}/posts/${param.postId}`)
+    .patch(`/${param.category}/posts/${param.postId}`, JSON.stringify(body), {
+      headers: {
+        Authorization: token,
+      },
+    })
     .then(success)
     .catch(fail);
 }
 
-function modifyPost(param, success, fail) {
-  local.patch().then(success).catch(fail);
+function detailPost(param, success, fail) {
+  local.get(`/${param.category}/posts/${param.postId}`).then(success).catch(fail);
 }
 
 function deletePost(param, success, fail) {
@@ -61,4 +72,4 @@ function deletePost(param, success, fail) {
     .catch(fail);
 }
 
-export { listPost, writePost, detailPost, modifyPost, deletePost };
+export { listPost, writePost, modifyPost, detailPost, deletePost };

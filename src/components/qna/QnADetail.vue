@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { detailPost, deletePost } from "../../api/post.js";
+import { detailPost, deletePost, modifyPost } from "../../api/post.js";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
@@ -45,6 +45,23 @@ const handleDelete = () => {
   );
 };
 
+const handleModify = () => {
+  const param = {
+    category: "qna",
+    postId: route.params.id,
+  };
+
+  modifyPost(
+    param,
+    ({ data }) => {
+      router.replace({ name: "qna-list" });
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
 const reviews = ref([
   { id: 1, nickname: "test1", content: "Comment Test1" },
   { id: 2, nickname: "test2", content: "Comment Test2" },
@@ -55,20 +72,9 @@ const reviews = ref([
 
 <template>
   <v-container class="pa-0 pt-1">
-    <v-sheet
-      class="d-flex flex-wrap justify-center pt-8 pb-14"
-      :elevation="2"
-      border
-      rounded
-    >
-      <v-card
-        class="mx-auto pa-16 pb-3 w-75 mt-14 mb-2"
-        elevation="2"
-        rounded="md"
-      >
-        <v-card-title class="text-center text-h5 font-weight-bold"
-          >QnA</v-card-title
-        >
+    <v-sheet class="d-flex flex-wrap justify-center pt-8 pb-14" :elevation="2" border rounded>
+      <v-card class="mx-auto pa-16 pb-3 w-75 mt-14 mb-2" elevation="2" rounded="md">
+        <v-card-title class="text-center text-h5 font-weight-bold">QnA</v-card-title>
 
         <div class="mt-8 mb-1">
           <v-text-field
@@ -95,6 +101,7 @@ const reviews = ref([
               rounded="md"
               color="success"
               elevation="1"
+              @click="$router.push({ name: 'qna-modify', params: { id: $route.params.id } })"
               >수정</v-btn
             >
             <v-btn
@@ -109,11 +116,7 @@ const reviews = ref([
           </v-card-action>
         </div>
       </v-card>
-      <v-card
-        class="ps-16 pe-16 pt-6 pb-6 w-75 mt-2 mb-14"
-        elevation="2"
-        rounded="md"
-      >
+      <v-card class="ps-16 pe-16 pt-6 pb-6 w-75 mt-2 mb-14" elevation="2" rounded="md">
         <v-list lines="three">
           <v-list-subheader class="font-weight-bold">Comment</v-list-subheader>
           <v-list-item
