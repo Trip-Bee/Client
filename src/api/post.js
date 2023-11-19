@@ -37,4 +37,28 @@ function writePost(param, success, fail) {
     .catch(fail);
 }
 
-export { listPost, writePost };
+function detailPost(param, success, fail) {
+  local
+    .get(`/${param.category}/posts/${param.postId}`)
+    .then(success)
+    .catch(fail);
+}
+
+function modifyPost(param, success, fail) {
+  local.patch().then(success).catch(fail);
+}
+
+function deletePost(param, success, fail) {
+  const token = getAccessToken();
+  const writerId = getUserId();
+  local
+    .delete(`/${param.category}/posts/${param.postId}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then(success)
+    .catch(fail);
+}
+
+export { listPost, writePost, detailPost, modifyPost, deletePost };

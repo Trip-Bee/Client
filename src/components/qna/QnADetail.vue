@@ -1,14 +1,49 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
+import { detailPost, deletePost } from "../../api/post.js";
+import { useRoute, useRouter } from "vue-router";
 
-const qna = ref({
-  id: 1,
-  title: "title test",
-  content: "content test",
-  nickname: "nickname test",
-  hit: 0,
-  createdAt: "2023-11-10",
+const route = useRoute();
+const router = useRouter();
+
+const qna = ref({});
+
+onBeforeMount(() => {
+  getPost();
 });
+
+const getPost = () => {
+  const param = {
+    category: "qna",
+    postId: route.params.id,
+  };
+  detailPost(
+    param,
+    ({ data }) => {
+      qna.value = data.dataBody;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const handleDelete = () => {
+  const param = {
+    category: "qna",
+    postId: route.params.id,
+  };
+
+  deletePost(
+    param,
+    ({ data }) => {
+      router.replace({ name: "qna-list" });
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 
 const reviews = ref([
   { id: 1, nickname: "test1", content: "Comment Test1" },
@@ -35,7 +70,7 @@ const reviews = ref([
           >QnA</v-card-title
         >
 
-        <div class="mt-8 mb-8">
+        <div class="mt-8 mb-1">
           <v-text-field
             class="font-weight-bold"
             variant="solo"
@@ -51,6 +86,27 @@ const reviews = ref([
             row-height="15"
             no-resize
           ></v-textarea>
+        </div>
+        <div class="mb-8 d-flex justify-end">
+          <v-card-action>
+            <v-btn
+              class="font-weight-black me-2"
+              variant="outlined"
+              rounded="md"
+              color="success"
+              elevation="1"
+              >수정</v-btn
+            >
+            <v-btn
+              class="font-weight-black"
+              variant="outlined"
+              rounded="md"
+              color="error"
+              elevation="1"
+              @click="handleDelete()"
+              >삭제</v-btn
+            >
+          </v-card-action>
         </div>
       </v-card>
       <v-card
