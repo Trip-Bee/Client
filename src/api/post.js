@@ -1,6 +1,9 @@
 import { localAxios } from "@/util/http-commons";
+import { useMemberStore } from "../stores/member";
 
 const local = localAxios();
+const memberStore = useMemberStore();
+const { getAccessToken, getUserId } = memberStore;
 
 function listPost(param, success, fail) {
   local
@@ -15,4 +18,23 @@ function listPost(param, success, fail) {
     .then(success)
     .catch(fail);
 }
-export { listPost };
+
+function writePost(param, success, fail) {
+  const token = getAccessToken();
+  const writerId = getUserId();
+  const body = {
+    title: param.post.title,
+    content: param.post.content,
+    writerId: writerId,
+  };
+  local
+    .post(`/${param.category}/posts`, JSON.stringify(body), {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then(success)
+    .catch(fail);
+}
+
+export { listPost, writePost };

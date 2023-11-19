@@ -239,6 +239,11 @@ export const useMemberStore = defineStore("memberStore", () => {
   //     );
   //   };
 
+  const getUserId = () => {
+    let decodeToken = jwtDecode(getAccessToken());
+    return decodeToken.jti;
+  };
+
   return {
     isAuthenticated,
     isLoginError,
@@ -251,5 +256,6 @@ export const useMemberStore = defineStore("memberStore", () => {
     getRefreshToken,
     isLogin,
     userLogout,
+    getUserId,
   };
 });
