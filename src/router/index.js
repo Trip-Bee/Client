@@ -65,6 +65,11 @@ const router = createRouter({
           name: "qna-write",
           component: () => import("@/components/qna/QnAWrite.vue"),
         },
+        {
+          path: "modify/:id",
+          name: "qna-modify",
+          component: () => import("@/components/qna/QnAModifiy.vue"),
+        },
       ],
     },
   ],
