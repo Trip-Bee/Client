@@ -24,6 +24,7 @@ const { handleSubmit } = useForm({
 
 const title = useField("title");
 const content = useField("content");
+console.log(title.value);
 
 const submit = handleSubmit((values) => {
   console.log(values.value);
@@ -77,18 +78,21 @@ const getPost = () => {
         <form @submit.prevent="submit">
           <div class="mt-8">
             <v-text-field
-              v-model="title.value.value"
+              v-model="qna.title"
               :error-messages="title.errorMessage.value"
               :counter="30"
-              :value="'[QnA] ' + qna.title"
               label="Title"
               variant="solo"
+              :value="'[QnA] ' + qna.title"
             ></v-text-field>
+            <!-- v-model="title.value.value" -->
+            <!-- :value="'[QnA] ' + qna.title" -->
 
+            <!-- v-model="content.value.value" -->
+            <!-- :value="qna.content" -->
             <v-textarea
-              v-model="content.value.value"
+              v-model="qna.content"
               :error-messages="content.errorMessage.value"
-              :value="qna.content"
               label="Content"
               variant="solo"
               rows="10"

@@ -1,7 +1,8 @@
-import { localAxios } from "@/util/http-commons";
+import { localAxios, simpleAxios } from "@/util/http-commons";
 import axios from "axios";
 const { VITE_VUE_API_URL } = import.meta.env;
 const local = localAxios();
+const simple = simpleAxios();
 
 async function userConfirm(param, success, fail) {
   console.log("param", param);
@@ -19,7 +20,7 @@ async function userConfirm(param, success, fail) {
 
 async function signupApi(signupUser, success, fail) {
   console.log("signup api", signupUser);
-  await local.post("/auth/signup", signupUser).then(success).catch(fail);
+  await simple.post("/auth/signup", signupUser).then(success).catch(fail);
   console.log("signup ok");
 }
 
