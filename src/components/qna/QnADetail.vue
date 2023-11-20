@@ -87,7 +87,24 @@ const reviews = ref([
           >QnA</v-card-title
         >
 
-        <div class="mt-8 mb-1">
+        <div class="mt-4 mb-2 d-flex flex-wrap justify-end">
+          <v-list lines="one">
+            <v-list-item
+              prepend-avatar="/src/assets/img/profile.png"
+              elevation="2"
+              rounded
+            >
+              <v-list-title class="font-weight-bold d-block">
+                {{ qna.nickname }}
+              </v-list-title>
+              <v-list-subtitle>
+                {{ qna.createdAt }}
+              </v-list-subtitle>
+            </v-list-item>
+          </v-list>
+        </div>
+
+        <div class="mt-2 mb-4">
           <v-text-field
             v-model="qna.title"
             class="font-weight-bold"
@@ -95,7 +112,6 @@ const reviews = ref([
             prefix="[QnA] "
             readonly
           ></v-text-field>
-
           <v-textarea
             variant="solo"
             :value="qna.content"

@@ -91,7 +91,7 @@ const submit = (modifyTitle, modifyContent) => {
               variant="elevated"
               @click="submit(qna.title, qna.content)"
             >
-              작성
+              수정
             </v-btn>
 
             <v-btn
