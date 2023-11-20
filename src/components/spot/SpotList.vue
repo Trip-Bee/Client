@@ -13,6 +13,7 @@ onBeforeMount(() => {
   getSpotType();
 });
 
+// 목록에 나올 리스트
 const sidoItems = ref([{ code: 0, name: "" }]);
 const gugunItems = ref([{ code: 0, name: "" }]);
 const spotTypeItems = ref([]);
@@ -56,11 +57,13 @@ const currentPage = ref(0);
 const totalPage = ref(0);
 const pageSize = ref(5);
 
+// 선택된 시도 code, 구군 code, spotType code
 const sidoCode = ref("");
 const gugunCode = ref("");
 const spotTypeCode = ref(0);
 const query = ref("");
 
+// search 결과로 반환받은 여행지 정보 >> 여기서 latitude, longitude 뽑아서 마커에 찍기
 const spotItems = ref([]);
 
 watch(sidoCode, (newValue, oldValue) => {
@@ -69,6 +72,8 @@ watch(sidoCode, (newValue, oldValue) => {
   };
   getGugun(param);
 });
+
+const spotPositions = ref([]);
 
 const spotSearch = (page, size, sido, gugun, type, input) => {
   console.log(`${sido} ${gugun} ${type} ${input}`);
@@ -92,6 +97,15 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
       gugunCode.value = gugun;
       spotTypeCode.value = type;
       query.value = input;
+
+      spotItems.value.forEach(element => {
+        spotPositions.push({
+          latitude: element.latitude,
+          longitude: element.longitude
+        })
+      });
+
+      console.log("spotPositions",spotPositions);
     },
     (error) => {
       console.log(error);
@@ -206,7 +220,7 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
         <v-row>
           <v-col cols="5">
             <v-sheet class="ms-2 me-1 border">
-              <VKakaoMap></VKakaoMap>
+              <VKakaoMap :positions="spotPositions"></VKakaoMap>
             </v-sheet>
           </v-col>
           <v-col

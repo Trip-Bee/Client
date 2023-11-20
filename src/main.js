@@ -72,7 +72,7 @@ app.use(pinia);
 app.use(router);
 
 const memberStore = useMemberStore();
-memberStore.isLogin(); // 애플리케이션 시작 시 로그인 상태 확인
+memberStore.isLogin(); 
 
 // app.mount("#app");
 app.use(vuetify).mount("#app");
