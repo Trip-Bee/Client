@@ -20,17 +20,6 @@ const props = defineProps({
     <td class="text-center">{{ post.hit }}</td>
     <td class="text-center">{{ post.createdAt }}</td>
   </tr>
-  <!-- <tr class="text-center">
-    <th scope="row">{{ post.id }}</th>
-    <td>
-      <router-link :to="{ name: 'qna-view', params: { id: post.id } }">
-        {{ post.title }}
-      </router-link>
-    </td>
-    <td>{{ post.nickname }}</td>
-    <td>{{ post.hit }}</td>
-    <td>{{ post.createdAt }}</td>
-  </tr> -->
 </template>
 
 <style scoped>
