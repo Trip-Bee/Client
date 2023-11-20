@@ -47,11 +47,15 @@ function modifyPost(param, success, fail) {
     content: param.post.content,
   };
   local
-    .patch(`/${param.category}/posts/${param.postId}`, JSON.stringify(body), {
-      headers: {
-        Authorization: token,
-      },
-    })
+    .patch(
+      `/${param.category}/posts/${param.post.postId}`,
+      JSON.stringify(body),
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
     .then(success)
     .catch(fail);
 }
