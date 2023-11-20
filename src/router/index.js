@@ -85,6 +85,29 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/plan",
+      name: "plan",
+      component: () => import("@/views/ThePlanView.vue"),
+      redirect: { name: "plan-list" },
+      children: [
+        {
+          path: "list",
+          name: "plan-list",
+          component: () => import("@/components/plan/PlanList.vue"),
+        },
+        {
+          path: "view/:id",
+          name: "plan-view",
+          component: () => import("@/components/plan/PlanDetail.vue"),
+        },
+        {
+          path: "write",
+          name: "plan-write",
+          component: () => import("@/components/plan/PlanWrite.vue"),
+        },
+      ],
+    },
   ],
 });
 
