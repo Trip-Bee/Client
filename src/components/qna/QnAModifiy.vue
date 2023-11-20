@@ -72,8 +72,13 @@ const submit = (modifyTitle, modifyContent) => {
               v-model="qna.title"
               label="Title"
               variant="solo"
+              :value="'[QnA] ' + qna.title"
             ></v-text-field>
+            <!-- v-model="title.value.value" -->
+            <!-- :value="'[QnA] ' + qna.title" -->
 
+            <!-- v-model="content.value.value" -->
+            <!-- :value="qna.content" -->
             <v-textarea
               v-model="qna.content"
               label="Content"
