@@ -16,7 +16,7 @@ watch(isAuthenticated, (newValue, oldValue) => {
 });
 
 const navItems = ref([
-  { value: "spot", title: "여행지", routeName: "" },
+  { value: "spot", title: "여행지", routeName: "spot-list" },
   { value: "plan", title: "플래너", routeName: "" },
   { value: "board", title: "게시판", routeName: "" },
   { value: "notice", title: "공지사항", routeName: "" },
