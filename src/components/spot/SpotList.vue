@@ -182,7 +182,7 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
                     clearable
                     @click:appendInner="
                       spotSearch(
-                        currentPage,
+                        1,
                         pageSize,
                         sidoCode,
                         gugunCode,
