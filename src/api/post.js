@@ -40,6 +40,8 @@ function writePost(param, success, fail) {
 function modifyPost(param, success, fail) {
   const token = getAccessToken();
   const writerId = getUserId();
+  console.log(param);
+  console.log(param.post.postId);
   const body = {
     id: param.post.postId,
     writerId: writerId,
