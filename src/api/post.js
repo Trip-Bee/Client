@@ -39,6 +39,7 @@ function writePost(param, success, fail) {
 
 function modifyPost(param, success, fail) {
   const token = getAccessToken();
+  const writerId = getUserId();
   const body = {
     id: param.post.postId,
     writerId: writerId,
@@ -56,7 +57,10 @@ function modifyPost(param, success, fail) {
 }
 
 function detailPost(param, success, fail) {
-  local.get(`/${param.category}/posts/${param.postId}`).then(success).catch(fail);
+  local
+    .get(`/${param.category}/posts/${param.postId}`)
+    .then(success)
+    .catch(fail);
 }
 
 function deletePost(param, success, fail) {
