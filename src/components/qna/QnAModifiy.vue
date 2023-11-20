@@ -1,49 +1,10 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { useField, useForm } from "vee-validate";
-import { detailPost, deletePost, modifyPost } from "../../api/post.js";
+import { detailPost, modifyPost } from "../../api/post.js";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-
-const { handleSubmit } = useForm({
-  validationSchema: {
-    title(value) {
-      if (value?.length > 0) return true;
-
-      return "Title을 입력하세요.";
-    },
-    content(value) {
-      if (value?.length > 0) return true;
-
-      return "Content를 입력하세요.";
-    },
-  },
-});
-
-const title = useField("title");
-const content = useField("content");
-console.log(title.value);
-
-const submit = handleSubmit((values) => {
-  console.log(values.value);
-  const post = {
-    postId: route.params.id,
-    title: values.value.title,
-    content: values.value.content,
-  };
-  const param = { category: "qna", post: post };
-  modifyPost(
-    param,
-    ({ data }) => {
-      router.replace({ name: "qna-list" });
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
-});
 
 const qna = ref({});
 
@@ -67,20 +28,48 @@ const getPost = () => {
     }
   );
 };
+
+const submit = (modifyTitle, modifyContent) => {
+  const post = {
+    postId: route.params.id,
+    title: modifyTitle,
+    content: modifyContent,
+  };
+  console.log(post);
+  const param = { category: "qna", post: post };
+  modifyPost(
+    param,
+    ({ data }) => {
+      router.replace({ name: "qna-list" });
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 </script>
 
 <template>
   <v-container class="pa-0 pt-1">
-    <v-sheet class="d-flex flex-wrap justify-center pt-8 pb-14" :elevation="2" border rounded>
-      <v-card class="mx-auto pa-16 pb-3 w-75 mt-14 mb-16" elevation="2" rounded="md">
-        <v-card-title class="text-center text-h5 font-weight-bold">QnA 작성</v-card-title>
+    <v-sheet
+      class="d-flex flex-wrap justify-center pt-8 pb-14"
+      :elevation="2"
+      border
+      rounded
+    >
+      <v-card
+        class="mx-auto pa-16 pb-3 w-75 mt-14 mb-16"
+        elevation="2"
+        rounded="md"
+      >
+        <v-card-title class="text-center text-h5 font-weight-bold"
+          >QnA 수정</v-card-title
+        >
 
         <form @submit.prevent="submit">
           <div class="mt-8">
             <v-text-field
               v-model="qna.title"
-              :error-messages="title.errorMessage.value"
-              :counter="30"
               label="Title"
               variant="solo"
               :value="'[QnA] ' + qna.title"
@@ -92,7 +81,6 @@ const getPost = () => {
             <!-- :value="qna.content" -->
             <v-textarea
               v-model="qna.content"
-              :error-messages="content.errorMessage.value"
               label="Content"
               variant="solo"
               rows="10"
@@ -106,7 +94,7 @@ const getPost = () => {
               class="write-btn mt-4 mb-16 font-weight-bold"
               color="#424242"
               variant="elevated"
-              @click="submit()"
+              @click="submit(qna.title, qna.content)"
             >
               작성
             </v-btn>
@@ -115,7 +103,7 @@ const getPost = () => {
               class="reset-btn mt-4 mb-16 font-weight-bold"
               color="#424242"
               variant="elevated"
-              @click="$router.push({ name: 'QnA' })"
+              @click="resetField()"
             >
               초기화
             </v-btn>

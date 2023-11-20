@@ -30,7 +30,7 @@ const navItems = ref([
       <v-col class="d-flex justify-space-between">
         <div>
           <router-link
-            :to="{ name: navItems[i - 1].routeName }"
+            :to="{ name: navItems[i - 1]?.routeName }"
             v-for="i in 5"
             tag="v-btn"
             ><v-btn
