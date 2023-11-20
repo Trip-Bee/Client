@@ -72,6 +72,19 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/spot",
+      name: "spot",
+      component: () => import("@/views/TheSpotView.vue"),
+      redirect: { name: "spot-list" },
+      children: [
+        {
+          path: "list",
+          name: "spot-list",
+          component: () => import("@/components/spot/SpotList.vue"),
+        },
+      ],
+    },
   ],
 });
 

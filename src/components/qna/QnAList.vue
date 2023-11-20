@@ -65,7 +65,9 @@ const getPostList = (page, size, key, word) => {
         rounded="md"
       >
         <v-container class="d-flex flex-wrap justify-center">
-          <v-container class="search pa-0 w-50 d-flex align-start justify-end">
+          <v-container
+            class="search pa-0 w-50 mb-3 d-flex align-start justify-end"
+          >
             <v-select
               class="search-type"
               label="검색조건"
@@ -75,6 +77,7 @@ const getPostList = (page, size, key, word) => {
               variant="outlined"
               density="compact"
               v-model="searchKey"
+              hide-details
             ></v-select>
             <v-text-field
               class="search-input ms-2"
@@ -142,10 +145,10 @@ th {
 }
 
 .search-type {
-  width: 30%;
+  width: 40%;
 }
 
 .search-input {
-  width: 70%;
+  width: 60%;
 }
 </style>
