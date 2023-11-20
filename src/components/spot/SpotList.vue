@@ -54,7 +54,7 @@ const getSpotType = () => {
 
 const currentPage = ref(0);
 const totalPage = ref(0);
-const pageSize = ref(10);
+const pageSize = ref(5);
 
 const sidoCode = ref("");
 const gugunCode = ref("");
@@ -72,6 +72,7 @@ watch(sidoCode, (newValue, oldValue) => {
 
 const spotSearch = (page, size, sido, gugun, type, input) => {
   console.log(`${sido} ${gugun} ${type} ${input}`);
+  console.log(`size :  ${size}`);
   search(
     {
       page: page,
@@ -82,6 +83,7 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
       query: input,
     },
     ({ data }) => {
+      console.log(data);
       spotItems.value = data.dataBody.data;
       currentPage.value = data.dataBody.currentPage;
       totalPage.value = data.dataBody.totalPage;
