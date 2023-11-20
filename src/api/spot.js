@@ -29,7 +29,7 @@ function search(param, success, fail) {
         size: param.size,
         sidoCode: param.sidoCode,
         gugunCode: param.gugunCode,
-        spotType: param.spotType,
+        typeId: param.typeId,
         query: param.query,
       },
     })
