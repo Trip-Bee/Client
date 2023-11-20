@@ -21,6 +21,18 @@ function localAxios() {
   return instance;
 }
 
+function simpleAxios() {
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: VITE_VUE_API_URL,
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+
+  return instance;
+}
+
 // function localAxios() {
 //   const instance = axios.create({
 //     withCredentials: true,
@@ -44,4 +56,4 @@ function tokenAxios() {
   return instance;
 }
 
-export { localAxios, tokenAxios };
+export { localAxios, simpleAxios, tokenAxios };
