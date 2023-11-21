@@ -1,12 +1,12 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onMounted } from "vue";
 import { detailSpot } from "../../api/spot.js";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
 
-onBeforeMount(() => {
+onMounted(() => {
   getSpot();
 });
 
