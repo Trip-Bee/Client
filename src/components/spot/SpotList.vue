@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, onBeforeMount } from "vue";
 import VKakaoMap from "../common/VKakaoMap.vue";
+import { useRouter } from "vue-router";
 import {
   getSidoList,
   getGugunList,
@@ -12,6 +13,8 @@ onBeforeMount(() => {
   getSido();
   getSpotType();
 });
+
+const router = useRouter();
 
 // 목록에 나올 리스트
 const sidoItems = ref([{ code: 0, name: "" }]);
@@ -34,7 +37,9 @@ const getGugun = (param) => {
     param,
     ({ data }) => {
       sidoCode.value = param.sidoCode;
-      gugunItems.value = data.dataBody;
+      const gugun = [{ code: "", name: "전체", sidoCode: param.sidoCode }];
+      gugun.concat(data.dataBody);
+      gugunItems.value = gugun.concat(data.dataBody);
     },
     (error) => {
       console.log(error);
@@ -105,7 +110,7 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
       //     latitude: element.latitude,
       //     longitude: element.longitude,
       //   });
-      // });      
+      // });
     },
     (error) => {
       console.log(error);
@@ -113,25 +118,35 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
   );
 };
 
+watch(
+  () => spotItems.value,
+  (newValue, oldValue) => {
+    spotPositions.value = newValue.map((element) => ({
+      latitude: element.latitude,
+      longitude: element.longitude,
+    }));
 
-watch(() => spotItems.value, (newValue, oldValue) => {
-  spotPositions.value = newValue.map((element) => ({
-    latitude: element.latitude,
-    longitude: element.longitude,
-  }));
-
-  console.log('spotPositions이 변경되었습니다', spotPositions);
-});
+    console.log("spotPositions이 변경되었습니다", spotPositions);
+  }
+);
 
 // spotPositions.value = spotItems.value.map((element) => ({
 //         latitude: element.latitude,
 //         longitude: element.longitude,
 //       }));
 
-      // spotPositions.value.forEach((element) => {
-      //   console.log(element);
-      // });
+// spotPositions.value.forEach((element) => {
+//   console.log(element);
+// });
 
+const clickItem = (index) => {
+  router.push({
+    name: "spot-view",
+    params: {
+      id: spotItems.value[index].id,
+    },
+  });
+};
 </script>
 
 <template>
@@ -255,7 +270,7 @@ watch(() => spotItems.value, (newValue, oldValue) => {
                     >Spot</v-list-subheader
                   >
                   <v-list-item
-                    v-for="item in spotItems"
+                    v-for="(item, index) in spotItems"
                     :key="item.id"
                     :prepend-avatar="
                       item.image != ''
@@ -263,8 +278,9 @@ watch(() => spotItems.value, (newValue, oldValue) => {
                         : '../src/assets/img/profile.png'
                     "
                     :title="item.title"
-                    :subtitle="item.addr1"
+                    :subtitle="item.addr"
                     elevation="2"
+                    @click="clickItem(index)"
                   ></v-list-item>
                 </v-list>
               </v-card>
