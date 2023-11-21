@@ -1,7 +1,12 @@
 <script setup>
 import { ref, watch, onBeforeMount } from "vue";
 import VKakaoMap from "../common/VKakaoMap.vue";
-import { getSidoList, getGugunList, getSpotTypList, search } from "../../api/spot.js";
+import {
+  getSidoList,
+  getGugunList,
+  getSpotTypList,
+  search,
+} from "../../api/spot.js";
 
 onBeforeMount(() => {
   getSido();
@@ -55,7 +60,7 @@ const pageSize = ref(5);
 // 선택된 시도 code, 구군 code, spotType code
 const sidoCode = ref("");
 const gugunCode = ref("");
-const spotTypeCode = ref(0);
+const spotTypeCode = ref("");
 const query = ref("");
 
 // search 결과로 반환받은 여행지 정보 >> 여기서 latitude, longitude 뽑아서 마커에 찍기
@@ -131,14 +136,25 @@ watch(() => spotItems.value, (newValue, oldValue) => {
 
 <template>
   <v-container class="pa-0 pt-1">
-    <v-sheet class="d-flex flex-wrap justify-center pb-14" :elevation="2" border rounded>
+    <v-sheet
+      class="d-flex flex-wrap justify-center pb-14"
+      :elevation="2"
+      border
+      rounded
+    >
       <v-expansion-panels>
         <v-expansion-panel class="elevation-2">
-          <v-expansion-panel-title class="font-weight-bold" text-color="white" color="#424242">
+          <v-expansion-panel-title
+            class="font-weight-bold"
+            text-color="white"
+            color="#424242"
+          >
             검색
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-container class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-75 elevation-2 rounded">
+            <v-container
+              class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-75 elevation-2 rounded"
+            >
               <v-row>
                 <v-col>
                   <v-select
@@ -176,7 +192,11 @@ watch(() => spotItems.value, (newValue, oldValue) => {
                       class="justify-center"
                       v-model="spotTypeCode"
                     >
-                      <v-chip v-for="item in spotTypeItems" :key="item.id" :value="item.id">
+                      <v-chip
+                        v-for="item in spotTypeItems"
+                        :key="item.id"
+                        :value="item.id"
+                      >
                         {{ item.name }}
                       </v-chip>
                     </v-chip-group>
@@ -195,7 +215,14 @@ watch(() => spotItems.value, (newValue, oldValue) => {
                     v-model="query"
                     clearable
                     @click:appendInner="
-                      spotSearch(1, pageSize, sidoCode, gugunCode, spotTypeCode, query)
+                      spotSearch(
+                        1,
+                        pageSize,
+                        sidoCode,
+                        gugunCode,
+                        spotTypeCode,
+                        query
+                      )
                     "
                   ></v-text-field
                 ></v-col>
@@ -205,7 +232,11 @@ watch(() => spotItems.value, (newValue, oldValue) => {
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <v-card class="mx-auto ps-4 pe-4 pt-4 pb-3 w-75 mt-14 mb-16" elevation="2" rounded="md">
+      <v-card
+        class="mx-auto ps-4 pe-4 pt-4 pb-3 w-75 mt-14 mb-16"
+        elevation="2"
+        rounded="md"
+      >
         <v-row>
           <v-col cols="5">
             <v-sheet class="ms-2 me-1 border">
@@ -214,13 +245,23 @@ watch(() => spotItems.value, (newValue, oldValue) => {
           </v-col>
           <v-col
             ><v-sheet class="ms-1 me-2 border">
-              <v-card class="ps-16 pe-16 pt-6 pb-6 mt-2 mb-14" elevation="2" rounded="md">
+              <v-card
+                class="ps-16 pe-16 pt-6 pb-6 mt-2 mb-14"
+                elevation="2"
+                rounded="md"
+              >
                 <v-list lines="three">
-                  <v-list-subheader class="font-weight-bold">Spot</v-list-subheader>
+                  <v-list-subheader class="font-weight-bold"
+                    >Spot</v-list-subheader
+                  >
                   <v-list-item
                     v-for="item in spotItems"
                     :key="item.id"
-                    :prepend-avatar="item.image"
+                    :prepend-avatar="
+                      item.image != ''
+                        ? item.image
+                        : '../src/assets/img/profile.png'
+                    "
                     :title="item.title"
                     :subtitle="item.addr1"
                     elevation="2"
@@ -231,7 +272,16 @@ watch(() => spotItems.value, (newValue, oldValue) => {
                 class="mt-3 mb-10"
                 :length="totalPage"
                 show-first-last-page="true"
-                @click="spotSearch(currentPage, pageSize, sidoCode, gugunCode, spotTypeCode, query)"
+                @click="
+                  spotSearch(
+                    currentPage,
+                    pageSize,
+                    sidoCode,
+                    gugunCode,
+                    spotTypeCode,
+                    query
+                  )
+                "
                 v-model="currentPage"
               ></v-pagination></v-sheet
           ></v-col>
