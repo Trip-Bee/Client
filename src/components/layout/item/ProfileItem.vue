@@ -6,6 +6,7 @@ import router from "../../../router";
 
 const memberStore = useMemberStore();
 const { userLogout } = memberStore;
+const { userInfo } = storeToRefs(memberStore);
 
 const items = ref([
   { icon: `$account`, value: "mypage", title: "MyPage", routeName: "" },
@@ -46,8 +47,8 @@ const logout = async () => {
           <v-list>
             <v-list-item
               prepend-avatar="/src/assets/img/profile.png"
-              :title="user.nickname"
-              :subtitle="user.email"
+              :title="userInfo.nickname"
+              :subtitle="userInfo.email"
             >
             </v-list-item>
           </v-list>
