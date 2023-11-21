@@ -73,10 +73,12 @@ export const useMemberStore = defineStore("memberStore", () => {
 
     if (cookies.isKey("accessToken")) {
       isAuthenticated.value = true;
+      const token = getAccessToken();
+      getUserInfo(token);
     } else {
       isAuthenticated.value = false;
     }
-
+    
     console.log("isAuthenticated", isAuthenticated.value);
     menuStore.initMenu(isAuthenticated.value);
   };
