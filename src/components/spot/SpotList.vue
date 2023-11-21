@@ -168,7 +168,7 @@ const clickItem = (index) => {
           </v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-container
-              class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-75 elevation-2 rounded"
+              class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-90 elevation-2 rounded"
             >
               <v-row>
                 <v-col>
@@ -248,7 +248,7 @@ const clickItem = (index) => {
       </v-expansion-panels>
 
       <v-card
-        class="mx-auto ps-4 pe-4 pt-4 pb-3 w-75 mt-14 mb-16"
+        class="mx-auto ps-4 pe-4 pt-4 pb-3 w-90 mt-14 mb-16"
         elevation="2"
         rounded="md"
       >
@@ -322,5 +322,13 @@ const clickItem = (index) => {
 
 .spot-list {
   width: 65%;
+}
+
+.w-85 {
+  width: 85%;
+}
+
+.w-90 {
+  width: 90%;
 }
 </style>
