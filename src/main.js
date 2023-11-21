@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { useMemberStore } from "./stores/member";
-import VueCookies from "vue3-cookies";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 import App from "./App.vue";
@@ -37,6 +36,9 @@ import {
 } from "@mdi/js";
 
 const vuetify = createVuetify({
+  lang: {
+    current: "ko",
+  },
   components,
   icons: {
     defaultSet: "mdi",
@@ -78,5 +80,4 @@ app.use(router);
 const memberStore = useMemberStore();
 memberStore.isLogin();
 
-// app.mount("#app");
 app.use(vuetify).mount("#app");
