@@ -30,7 +30,7 @@ onMounted(() => {
 const getPostList = (page, size, key, word) => {
   listPost(
     {
-      category: "qna",
+      category: "notice",
       page: page,
       size: size,
       key: key,
@@ -95,7 +95,7 @@ const getPostList = (page, size, key, word) => {
             ></v-text-field>
           </v-container>
           <v-container class="pa-0 d-flex justify-end align-end">
-            <router-link :to="{ name: 'qna-write' }" tag="v-btn"
+            <router-link :to="{ name: 'notice-write' }" tag="v-btn"
               ><v-btn
                 class="font-weight-black"
                 variant="outlined"

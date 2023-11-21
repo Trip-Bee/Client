@@ -1,5 +1,8 @@
 <script setup>
 import { defineProps } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const props = defineProps({
   posts: Array,
@@ -23,7 +26,10 @@ const props = defineProps({
         <td class="text-center">
           <router-link
             class="title text-decoration-none"
-            :to="{ name: 'qna-view', params: { id: post.id } }"
+            :to="{
+              name: `${route.path.split('/')[1]}-view`,
+              params: { id: post.id },
+            }"
             >{{ post.title }}</router-link
           >
         </td>

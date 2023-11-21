@@ -2,8 +2,8 @@
 import { ref, onMounted } from "vue";
 import { detailPost, deletePost, modifyPost } from "../../api/post.js";
 import { useRoute, useRouter } from "vue-router";
-import CommentList from "../common/CommentList.vue";
-import { listComment } from "../../api/comment";
+import CommentList from "../common/CommentList.vue.js";
+import { listComment } from "../../api/comment.js";
 import { useMemberStore } from "../../stores/member";
 
 const memberStore = useMemberStore();
@@ -12,7 +12,7 @@ const { getUserId } = memberStore;
 const route = useRoute();
 const router = useRouter();
 
-const qna = ref({});
+const board = ref({});
 
 onMounted(() => {
   getPost();
@@ -21,13 +21,13 @@ onMounted(() => {
 
 const getPost = () => {
   const param = {
-    category: "qna",
+    category: "board",
     postId: route.params.id,
   };
   detailPost(
     param,
     ({ data }) => {
-      qna.value = data.dataBody;
+      board.value = data.dataBody;
     },
     (error) => {
       console.log(error);
@@ -37,7 +37,7 @@ const getPost = () => {
 
 const getComments = () => {
   const param = {
-    category: "qna",
+    category: "board",
     postId: route.params.id,
   };
   listComment(
@@ -53,14 +53,14 @@ const getComments = () => {
 
 const handleDelete = () => {
   const param = {
-    category: "qna",
+    category: "board",
     postId: route.params.id,
   };
 
   deletePost(
     param,
     ({ data }) => {
-      router.replace({ name: "qna-list" });
+      router.replace({ name: "board-list" });
     },
     (error) => {
       console.log(error);
@@ -70,14 +70,14 @@ const handleDelete = () => {
 
 const handleModify = () => {
   const param = {
-    category: "qna",
+    category: "board",
     postId: route.params.id,
   };
 
   modifyPost(
     param,
     ({ data }) => {
-      router.replace({ name: "qna-list" });
+      router.replace({ name: "board-list" });
     },
     (error) => {
       console.log(error);
@@ -102,7 +102,7 @@ const comments = ref([]);
         rounded="md"
       >
         <v-card-title class="text-center text-h5 font-weight-bold"
-          >QnA</v-card-title
+          >Board</v-card-title
         >
 
         <div class="mt-4 mb-2 d-flex flex-wrap justify-end">
@@ -113,10 +113,10 @@ const comments = ref([]);
               rounded
             >
               <v-list-title class="font-weight-bold d-block">
-                {{ qna.nickname }}
+                {{ board.nickname }}
               </v-list-title>
               <v-list-subtitle>
-                {{ qna.createdAt }}
+                {{ board.createdAt }}
               </v-list-subtitle>
             </v-list-item>
           </v-list>
@@ -124,15 +124,15 @@ const comments = ref([]);
 
         <div class="mt-2 mb-4">
           <v-text-field
-            v-model="qna.title"
+            v-model="board.title"
             class="font-weight-bold"
             variant="solo"
-            prefix="[QnA] "
+            prefix="[Board] "
             readonly
           ></v-text-field>
           <v-textarea
             variant="solo"
-            :value="qna.content"
+            :value="board.content"
             readonly
             rows="10"
             row-height="15"
@@ -141,7 +141,7 @@ const comments = ref([]);
         </div>
         <div class="mb-8 d-flex justify-end">
           <v-card-action>
-            <div v-if="getUserId() == qna.writerId">
+            <div v-if="getUserId() == board.writerId">
               <v-btn
                 class="font-weight-black me-2"
                 variant="outlined"
@@ -150,7 +150,7 @@ const comments = ref([]);
                 elevation="1"
                 @click="
                   $router.push({
-                    name: 'qna-modify',
+                    name: 'board-modify',
                     params: { id: $route.params.id },
                   })
                 "
