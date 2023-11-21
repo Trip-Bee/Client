@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onMounted } from "vue";
 import { detailPost, modifyPost } from "../../api/post.js";
 import { useRoute, useRouter } from "vue-router";
 
@@ -8,7 +8,7 @@ const router = useRouter();
 
 const qna = ref({});
 
-onBeforeMount(() => {
+onMounted(() => {
   getPost();
 });
 

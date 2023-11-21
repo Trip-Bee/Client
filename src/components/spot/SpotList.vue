@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onBeforeMount } from "vue";
+import { ref, watch, onMounted } from "vue";
 import VKakaoMap from "../common/VKakaoMap.vue";
 import { useRouter } from "vue-router";
 import {
@@ -9,7 +9,7 @@ import {
   search,
 } from "../../api/spot.js";
 
-onBeforeMount(() => {
+onMounted(() => {
   getSido();
   getSpotType();
 });
@@ -281,6 +281,14 @@ const clickItem = (index) => {
                     :subtitle="item.addr"
                     elevation="2"
                     @click="clickItem(index)"
+                  >
+                    <template v-slot:append>
+                      <v-btn
+                        color="red"
+                        icon="$heart"
+                        variant="text"
+                        @click=""
+                      ></v-btn> </template
                   ></v-list-item>
                 </v-list>
               </v-card>

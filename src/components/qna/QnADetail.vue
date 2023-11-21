@@ -1,15 +1,18 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onMounted } from "vue";
 import { detailPost, deletePost, modifyPost } from "../../api/post.js";
 import { useRoute, useRouter } from "vue-router";
+import CommentList from "../common/CommentList.vue";
+import { listComment } from "../../api/comment";
 
 const route = useRoute();
 const router = useRouter();
 
 const qna = ref({});
 
-onBeforeMount(() => {
+onMounted(() => {
   getPost();
+  getComments();
 });
 
 const getPost = () => {
@@ -21,6 +24,22 @@ const getPost = () => {
     param,
     ({ data }) => {
       qna.value = data.dataBody;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const getComments = () => {
+  const param = {
+    category: "qna",
+    postId: route.params.id,
+  };
+  listComment(
+    param,
+    ({ data }) => {
+      comments.value = data.dataBody;
     },
     (error) => {
       console.log(error);
@@ -62,12 +81,7 @@ const handleModify = () => {
   );
 };
 
-const reviews = ref([
-  { id: 1, nickname: "test1", content: "Comment Test1" },
-  { id: 2, nickname: "test2", content: "Comment Test2" },
-  { id: 3, nickname: "test3", content: "Comment Test3" },
-  { id: 4, nickname: "test4", content: "Comment Test4" },
-]);
+const comments = ref([]);
 </script>
 
 <template>
@@ -149,23 +163,7 @@ const reviews = ref([
           </v-card-action>
         </div>
       </v-card>
-      <v-card
-        class="ps-16 pe-16 pt-6 pb-6 w-75 mt-2 mb-14"
-        elevation="2"
-        rounded="md"
-      >
-        <v-list lines="three">
-          <v-list-subheader class="font-weight-bold">Comment</v-list-subheader>
-          <v-list-item
-            v-for="review in reviews"
-            :key="review.id"
-            prepend-avatar="/src/assets/img/profile.png"
-            :title="review.nickname"
-            :subtitle="review.content"
-            elevation="2"
-          ></v-list-item>
-        </v-list>
-      </v-card>
+      <CommentList></CommentList>
     </v-sheet>
   </v-container>
 </template>

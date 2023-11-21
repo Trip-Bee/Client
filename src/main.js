@@ -32,6 +32,8 @@ import {
   mdiEmailOutline,
   mdiLockOutline,
   mdiCardTextOutline,
+  mdiClose,
+  mdiHeart,
 } from "@mdi/js";
 
 const vuetify = createVuetify({
@@ -54,6 +56,8 @@ const vuetify = createVuetify({
       email: mdiEmailOutline,
       lock: mdiLockOutline,
       card: mdiCardTextOutline,
+      close: mdiClose,
+      heart: mdiHeart,
     },
     sets: {
       mdi,
@@ -72,7 +76,7 @@ app.use(pinia);
 app.use(router);
 
 const memberStore = useMemberStore();
-memberStore.isLogin(); 
+memberStore.isLogin();
 
 // app.mount("#app");
 app.use(vuetify).mount("#app");
