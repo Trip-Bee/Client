@@ -54,7 +54,11 @@ const logout = async () => {
           </v-list>
           <v-divider></v-divider>
           <v-list :lines="false" density="compact" nav>
-            <v-list-item color="primary">
+            <v-list-item color="primary" @click="
+                        $router.push({
+                            name: 'user-mypage',
+                        })
+                    ">
               <template v-slot:prepend>
                 <v-icon icon="$account"></v-icon>
               </template>
