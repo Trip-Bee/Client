@@ -78,7 +78,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     } else {
       isAuthenticated.value = false;
     }
-    
+
     console.log("isAuthenticated", isAuthenticated.value);
     menuStore.initMenu(isAuthenticated.value);
   };
@@ -264,6 +264,16 @@ export const useMemberStore = defineStore("memberStore", () => {
     return decodeToken.jti;
   };
 
+  const getUserEmail = () => {
+    let decodeToken = jwtDecode(getAccessToken());
+    return decodeToken.email;
+  };
+
+  const getUserNickname = () => {
+    let decodeToken = jwtDecode(getAccessToken());
+    return decodeToken.nickname;
+  };
+
   return {
     isAuthenticated,
     isLoginError,
@@ -279,5 +289,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     userLogout,
     userSignup,
     getUserId,
+    getUserEmail,
+    getUserNickname,
   };
 });
