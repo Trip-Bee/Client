@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
-import QnAListItem from "./item/QnAListItem.vue";
+import { ref, onMounted } from "vue";
 import { listPost } from "../../api/post.js";
+import PostList from "../common/PostList.vue";
 
 const posts = ref([]);
 
@@ -18,7 +18,7 @@ const items = ref([
   { text: "작성자", value: "nickname" },
 ]);
 
-onBeforeMount(() => {
+onMounted(() => {
   getPostList(
     currentPage.value,
     pageSize.value,
@@ -107,20 +107,7 @@ const getPostList = (page, size, key, word) => {
             >
           </v-container>
           <v-container class="pa-0 pt-3">
-            <v-table hover="true">
-              <thead class="elevation-3">
-                <tr>
-                  <th class="text-center text-white">ID</th>
-                  <th class="text-center text-white w-50">제목</th>
-                  <th class="text-center text-white">작성자</th>
-                  <th class="text-center text-white">조회수</th>
-                  <th class="text-center text-white">작성일</th>
-                </tr>
-              </thead>
-              <tbody v-for="post in posts" :key="post.id">
-                <QnAListItem :post="post"></QnAListItem>
-              </tbody>
-            </v-table>
+            <PostList :posts="posts" @pagination="getPostList()"></PostList>
             <v-pagination
               class="mt-3 mb-10"
               :length="totalPage"

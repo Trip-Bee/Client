@@ -42,11 +42,24 @@ const signup = async () => {
 
 <template>
   <v-container class="pa-0 pt-1">
-    <v-sheet class="d-flex flex-wrap justify-center pt-8 pb-14" :elevation="2" border rounded>
-      <v-card class="mx-auto pa-16 pb-3 w-50 mt-14 mb-16" elevation="2" rounded="md">
-        <v-card-title class="text-center text-h5 font-weight-bold">회원가입</v-card-title>
+    <v-sheet
+      class="d-flex flex-wrap justify-center pt-8 pb-14"
+      :elevation="2"
+      border
+      rounded
+    >
+      <v-card
+        class="mx-auto pa-16 pb-3 w-50 mt-14 mb-16"
+        elevation="2"
+        rounded="md"
+      >
+        <v-card-title class="text-center text-h5 font-weight-bold"
+          >회원가입</v-card-title
+        >
 
-        <div class="text-subtitle-1 text-large-emphasis font-weight-medium">닉네임</div>
+        <div class="text-subtitle-1 text-large-emphasis font-weight-medium">
+          닉네임
+        </div>
 
         <v-text-field
           v-model="signupUser.nickname"
@@ -56,7 +69,9 @@ const signup = async () => {
           variant="solo"
         ></v-text-field>
 
-        <div class="text-subtitle-1 text-large-emphasis font-weight-medium">이메일</div>
+        <div class="text-subtitle-1 text-large-emphasis font-weight-medium">
+          이메일
+        </div>
 
         <v-text-field
           v-model="signupUser.email"
