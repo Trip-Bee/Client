@@ -83,6 +83,62 @@ const router = createRouter({
       ],
     },
     {
+      path: "/notice",
+      name: "notice",
+      component: () => import("@/views/TheNoticeView.vue"),
+      redirect: { name: "notice-list" },
+      children: [
+        {
+          path: "list",
+          name: "notice-list",
+          component: () => import("@/components/notice/NoticeList.vue"),
+        },
+        {
+          path: "view/:id",
+          name: "notice-view",
+          component: () => import("@/components/notice/NoticeDetail.vue"),
+        },
+        {
+          path: "write",
+          name: "notice-write",
+          component: () => import("@/components/notice/NoticeWrite.vue"),
+        },
+        {
+          path: "modify/:id",
+          name: "notice-modify",
+          component: () => import("@/components/notice/NoticeModify.vue"),
+        },
+      ],
+    },
+    {
+      path: "/board",
+      name: "board",
+      component: () => import("@/views/TheBoardView.vue"),
+      redirect: { name: "board-list" },
+      children: [
+        {
+          path: "list",
+          name: "board-list",
+          component: () => import("@/components/board/BoardList.vue"),
+        },
+        {
+          path: "view/:id",
+          name: "board-view",
+          component: () => import("@/components/board/BoardDetail.vue"),
+        },
+        {
+          path: "write",
+          name: "board-write",
+          component: () => import("@/components/board/BoardWrite.vue"),
+        },
+        {
+          path: "modify/:id",
+          name: "board-modify",
+          component: () => import("@/components/board/BoardModify.vue"),
+        },
+      ],
+    },
+    {
       path: "/spot",
       name: "spot",
       component: () => import("@/views/TheSpotView.vue"),
