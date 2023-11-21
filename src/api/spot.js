@@ -37,4 +37,9 @@ function search(param, success, fail) {
     .catch(fail);
 }
 
-export { getSidoList, getGugunList, getSpotTypList, search };
+function detailSpot(param, success, fail) {
+  console.log(param);
+  local.get(`/spot/${param.id}`).then(success).catch(fail);
+}
+
+export { getSidoList, getGugunList, getSpotTypList, search, detailSpot };

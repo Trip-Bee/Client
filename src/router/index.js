@@ -83,6 +83,11 @@ const router = createRouter({
           name: "spot-list",
           component: () => import("@/components/spot/SpotList.vue"),
         },
+        {
+          path: "view/:id",
+          name: "spot-view",
+          component: () => import("@/components/spot/SpotDetail.vue"),
+        },
       ],
     },
     {
