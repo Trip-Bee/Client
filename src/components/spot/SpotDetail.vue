@@ -52,7 +52,9 @@ const getSpot = () => {
         >
           <v-img
             class="elevation-2 rounded"
-            :src="spot.image"
+            :src="
+              spot.image != '' ? spot.image : '../../src/assets/img/default.png'
+            "
             :width="400"
             :aspect-ratio="1 / 1"
             cover
