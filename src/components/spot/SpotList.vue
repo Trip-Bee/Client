@@ -100,22 +100,33 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
       //     latitude: element.latitude,
       //     longitude: element.longitude,
       //   });
-      // });
-
-      spotPositions.value = spotItems.value.map((element) => ({
-        latitude: element.latitude,
-        longitude: element.longitude,
-      }));
-
-      spotPositions.value.forEach((element) => {
-        console.log(element);
-      });
+      // });      
     },
     (error) => {
       console.log(error);
     }
   );
 };
+
+
+watch(() => spotItems.value, (newValue, oldValue) => {
+  spotPositions.value = newValue.map((element) => ({
+    latitude: element.latitude,
+    longitude: element.longitude,
+  }));
+
+  console.log('spotPositions이 변경되었습니다', spotPositions);
+});
+
+// spotPositions.value = spotItems.value.map((element) => ({
+//         latitude: element.latitude,
+//         longitude: element.longitude,
+//       }));
+
+      // spotPositions.value.forEach((element) => {
+      //   console.log(element);
+      // });
+
 </script>
 
 <template>
@@ -198,7 +209,7 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
         <v-row>
           <v-col cols="5">
             <v-sheet class="ms-2 me-1 border">
-              <VKakaoMap :positions="spotPositions"></VKakaoMap>
+              <VKakaoMap :spotPositions="spotPositions"></VKakaoMap>
             </v-sheet>
           </v-col>
           <v-col
