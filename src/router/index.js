@@ -23,6 +23,16 @@ const router = createRouter({
       },
     },
     {
+      path: "/email",
+      name: "email",
+      component: () => import("@/components/users/EmailInput.vue"),
+    },
+    {
+      path: "/password",
+      name: "password",
+      component: () => import("@/components/users/UserPassword.vue"),
+    },
+    {
       path: "/user",
       name: "user",
       component: () => import("@/views/TheUserView.vue"),
