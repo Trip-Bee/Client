@@ -7,7 +7,7 @@ import { listComment } from "../../api/comment";
 import { useMemberStore } from "../../stores/member";
 
 const memberStore = useMemberStore();
-const { getUserId } = memberStore;
+const { userInfo } = memberStore;
 
 const route = useRoute();
 const router = useRouter();
@@ -141,7 +141,7 @@ const comments = ref([]);
         </div>
         <div class="mb-8 d-flex justify-end">
           <v-card-action>
-            <div v-if="getUserId() == qna.writerId">
+            <div v-if="userInfo != null && userInfo.jti == qna.writerId">
               <v-btn
                 class="font-weight-black me-2"
                 variant="outlined"

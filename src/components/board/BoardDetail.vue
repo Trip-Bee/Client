@@ -2,12 +2,12 @@
 import { ref, onMounted } from "vue";
 import { detailPost, deletePost, modifyPost } from "../../api/post.js";
 import { useRoute, useRouter } from "vue-router";
-import CommentList from "../common/CommentList.vue.js";
+import CommentList from "../common/CommentList.vue";
 import { listComment } from "../../api/comment.js";
 import { useMemberStore } from "../../stores/member";
 
 const memberStore = useMemberStore();
-const { getUserId } = memberStore;
+const { userInfo } = memberStore;
 
 const route = useRoute();
 const router = useRouter();
@@ -141,7 +141,7 @@ const comments = ref([]);
         </div>
         <div class="mb-8 d-flex justify-end">
           <v-card-action>
-            <div v-if="getUserId() == board.writerId">
+            <div v-if="userInfo != null && userInfo.jti == board.writerId">
               <v-btn
                 class="font-weight-black me-2"
                 variant="outlined"

@@ -253,12 +253,11 @@ const clickItem = (index) => {
         rounded="md"
       >
         <v-row class="d-flex flex-column">
-          <v-col cols="5">
+          <v-col cols="5" align-self="center" lg>
             <v-sheet class="ms-2 me-1 border">
               <VKakaoMap
                 :spotPositions="spotPositions"
                 :height="300"
-                :width="644"
               ></VKakaoMap>
             </v-sheet>
           </v-col>
@@ -299,7 +298,7 @@ const clickItem = (index) => {
               <v-pagination
                 class="mt-1 mb-6"
                 :length="totalPage"
-                show-first-last-page="true"
+                :show-first-last-page="true"
                 @click="
                   spotSearch(
                     currentPage,

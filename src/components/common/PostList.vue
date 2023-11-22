@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <v-table hover="true">
+  <v-table :hover="true">
     <thead class="elevation-3">
       <tr>
         <th class="text-center text-white">ID</th>

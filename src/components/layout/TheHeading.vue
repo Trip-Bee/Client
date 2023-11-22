@@ -33,7 +33,7 @@ const { isAuthenticated } = storeToRefs(memberStore);
 .notVisible {
   visibility: hidden;
 }
-.Visible {
+.visible {
   visibility: visible;
 }
 </style>

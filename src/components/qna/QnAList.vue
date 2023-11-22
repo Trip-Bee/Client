@@ -2,6 +2,10 @@
 import { ref, onMounted } from "vue";
 import { listPost } from "../../api/post.js";
 import PostList from "../common/PostList.vue";
+import { useMemberStore } from "../../stores/member";
+
+const memberStore = useMemberStore();
+const { isAuthenticated } = memberStore;
 
 const posts = ref([]);
 
@@ -95,23 +99,30 @@ const getPostList = (page, size, key, word) => {
             ></v-text-field>
           </v-container>
           <v-container class="pa-0 d-flex justify-end align-end">
-            <router-link :to="{ name: 'qna-write' }" tag="v-btn"
-              ><v-btn
-                class="font-weight-black"
-                variant="outlined"
-                rounded="md"
-                color="#757575"
-                elevation="1"
-                >글쓰기</v-btn
-              ></router-link
+            <div
+              :class="{
+                notVisible: !isAuthenticated,
+                visible: isAuthenticated,
+              }"
             >
+              <router-link :to="{ name: 'qna-write' }" tag="v-btn"
+                ><v-btn
+                  class="font-weight-black"
+                  variant="outlined"
+                  rounded="md"
+                  color="#757575"
+                  elevation="1"
+                  >글쓰기</v-btn
+                ></router-link
+              >
+            </div>
           </v-container>
           <v-container class="pa-0 pt-3">
             <PostList :posts="posts"></PostList>
             <v-pagination
               class="mt-3 mb-10"
               :length="totalPage"
-              show-first-last-page="true"
+              :show-first-last-page="true"
               @click="getPostList(currentPage, pageSize, searchKey, searchWord)"
               v-model="currentPage"
             ></v-pagination>
@@ -137,5 +148,12 @@ th {
 
 .search-input {
   width: 60%;
+}
+
+.notVisible {
+  visibility: hidden;
+}
+.visible {
+  visibility: visible;
 }
 </style>
