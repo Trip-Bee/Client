@@ -21,16 +21,9 @@ const { handleSubmit, handleReset } = useForm({
     },
     passwordCheck(value) {
       if (value?.length > 0) {
-        return true;
+        if (password.value.value == passwordCheck.value.value) return true;
       }
-      return "비밀번호 확인을 입력하세요.";
-    },
-    passwordCheck(value) {
-      if (password.value.value == value?.value) {
-        return true;
-      } else {
-        return "비밀번호가 같지 않습니다.";
-      }
+      return "비밀번호가 같지 않습니다.";
     },
   },
 });
@@ -61,7 +54,6 @@ const signup = async () => {
   signupUser.value.nickname = nickname.value.value;
   signupUser.value.email = email.value.value;
   signupUser.value.password = password.value.value;
-  signupUser.value.passwordCheck = passwordCheck.value.value;
 
   // signup.password === signup.passwordCheck
   let user = signupUser.value;
