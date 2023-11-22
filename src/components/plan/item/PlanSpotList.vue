@@ -2,12 +2,7 @@
 import { ref, watch, onMounted, defineProps, defineEmits } from "vue";
 import VKakaoMap from "../../common/VKakaoMap.vue";
 import { useRouter } from "vue-router";
-import {
-  getSidoList,
-  getGugunList,
-  getSpotTypList,
-  search,
-} from "../../../api/spot.js";
+import { getSidoList, getGugunList, getSpotTypList, search } from "../../../api/spot.js";
 
 onMounted(() => {
   getSido();
@@ -16,9 +11,9 @@ onMounted(() => {
 
 const props = defineProps({
   tab: {
-    type: Number
-  }
-})
+    type: Number,
+  },
+});
 
 const router = useRouter();
 
@@ -154,43 +149,28 @@ const clickItem = (index) => {
   });
 };
 
-const emit = defineEmits(['addPlanDetail']);
-const addPlanDetail = (item, detailIndex) => {
-  emit('emitPlanDetail',
-    {
-      tab: props.tab,
-      detailIndex: detailIndex,
-      spotId: item.id,
-      title: item.title,
-      image: item.image != ''
-        ? item.image
-        : '../src/assets/img/profile.png',
-      addr: item.addr
-    });
-}
+const emit = defineEmits(["emitPlanDetail"]);
+const addPlanDetail = (item) => {
+  emit("emitPlanDetail", {
+    tab: props.tab,
+    spotId: item.id,
+    title: item.title,
+    image: item.image != "" ? item.image : "../src/assets/img/profile.png",
+    addr: item.addr,
+  });
+};
 </script>
 
 <template>
   <v-container class="pa-0 pt-1">
-    <v-sheet
-      class="d-flex flex-wrap justify-center"
-      :elevation="2"
-      border
-      rounded
-    >
+    <v-sheet class="d-flex flex-wrap justify-center" :elevation="2" border rounded>
       <v-expansion-panels>
         <v-expansion-panel class="elevation-2">
-          <v-expansion-panel-title
-            class="font-weight-bold"
-            text-color="white"
-            color="#424242"
-          >
+          <v-expansion-panel-title class="font-weight-bold" text-color="white" color="#424242">
             검색
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-container
-              class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-90 elevation-2 rounded"
-            >
+            <v-container class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-90 elevation-2 rounded">
               <v-row>
                 <v-col>
                   <v-select
@@ -228,11 +208,7 @@ const addPlanDetail = (item, detailIndex) => {
                       class="justify-center"
                       v-model="spotTypeCode"
                     >
-                      <v-chip
-                        v-for="item in spotTypeItems"
-                        :key="item.id"
-                        :value="item.id"
-                      >
+                      <v-chip v-for="item in spotTypeItems" :key="item.id" :value="item.id">
                         {{ item.name }}
                       </v-chip>
                     </v-chip-group>
@@ -251,14 +227,7 @@ const addPlanDetail = (item, detailIndex) => {
                     v-model="query"
                     clearable
                     @click:appendInner="
-                      spotSearch(
-                        1,
-                        pageSize,
-                        sidoCode,
-                        gugunCode,
-                        spotTypeCode,
-                        query
-                      )
+                      spotSearch(1, pageSize, sidoCode, gugunCode, spotTypeCode, query)
                     "
                   ></v-text-field
                 ></v-col>
@@ -268,41 +237,25 @@ const addPlanDetail = (item, detailIndex) => {
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <v-card
-        class="mx-auto ps-4 pe-4 pt-4 pb-3 w-90 mt-14 mb-16"
-        elevation="2"
-        rounded="md"
-      >
+      <v-card class="mx-auto ps-4 pe-4 pt-4 pb-3 w-90 mt-14 mb-16" elevation="2" rounded="md">
         <v-row class="d-flex flex-column">
           <v-col cols="5" align-self="center" lg>
             <v-sheet class="ms-2 me-1 border">
-              <VKakaoMap
-                :spotPositions="spotPositions"
-                :height="300"
-              ></VKakaoMap>
+              <VKakaoMap :spotPositions="spotPositions" :height="300"></VKakaoMap>
             </v-sheet>
           </v-col>
           <v-col
             ><v-sheet class="ms-1 me-2 border">
-              <v-card
-                class="ps-16 pe-16 pt-6 pb-6 mt-2 mb-6"
-                elevation="2"
-                rounded="md"
-              >
+              <v-card class="ps-16 pe-16 pt-6 pb-6 mt-2 mb-6" elevation="2" rounded="md">
                 <v-list lines="three">
-                  <v-list-subheader class="font-weight-bold"
-                    >Spot</v-list-subheader
-                  >
-
+                  <v-list-subheader class="font-weight-bold">Spot</v-list-subheader>
 
                   <v-list-item
                     class="text-truncate"
                     v-for="(item, index) in spotItems"
                     :key="item.id"
                     :prepend-avatar="
-                      item.image != ''
-                        ? item.image
-                        : '../src/assets/img/profile.png'
+                      item.image != '' ? item.image : '../src/assets/img/profile.png'
                     "
                     :title="item.title"
                     :subtitle="item.addr"
@@ -313,26 +266,16 @@ const addPlanDetail = (item, detailIndex) => {
                         color="#424242"
                         icon="$plus"
                         variant="text"
-                        @click="emitPlanDetail(item, index)"
+                        @click="addPlanDetail(item)"
                       ></v-btn> </template
                   ></v-list-item>
-
                 </v-list>
               </v-card>
               <v-pagination
                 class="mt-1 mb-6"
                 :length="totalPage"
                 :show-first-last-page="true"
-                @click="
-                  spotSearch(
-                    currentPage,
-                    pageSize,
-                    sidoCode,
-                    gugunCode,
-                    spotTypeCode,
-                    query
-                  )
-                "
+                @click="spotSearch(currentPage, pageSize, sidoCode, gugunCode, spotTypeCode, query)"
                 v-model="currentPage"
               ></v-pagination></v-sheet
           ></v-col>
