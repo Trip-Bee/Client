@@ -1,36 +1,9 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import PlanListItem from "./item/PlanListItem.vue";
+import { listPlan } from "@/api/plan.js";
 
-const plans = ref([
-  {
-    planId: 1,
-    startDate: "2023-11-20",
-    endDate: "2023-11-22",
-    title: "집가고 싶다",
-    writedId: 1,
-    nickname: "test",
-    createdAt: "2023-11-20",
-  },
-  {
-    planId: 2,
-    startDate: "2023-11-20",
-    endDate: "2023-11-22",
-    title: "집가고 싶다2",
-    writedId: 1,
-    nickname: "test2",
-    createdAt: "2023-11-20",
-  },
-  {
-    planId: 3,
-    startDate: "2023-11-20",
-    endDate: "2023-11-22",
-    title: "집가고 싶다3",
-    writedId: 1,
-    nickname: "test3",
-    createdAt: "2023-11-20",
-  },
-]);
+const plans = ref([]);
 
 const currentPage = ref(0);
 const totalPage = ref(0);
@@ -45,7 +18,36 @@ const items = ref([
   { text: "작성자", value: "nickname" },
 ]);
 
-onBeforeMount(() => {});
+const getPlanList = (page, size, key, word) => {
+  listPlan(
+    {
+      page: page,
+      size: size,
+      key: key,
+      word: word,
+    },
+    ({ data }) => {
+      plans.value = data.dataBody.data;
+      currentPage.value = data.dataBody.currentPage;
+      totalPage.value = data.dataBody.totalPage;
+      pageSize.value = data.dataBody.size;
+      searchKey.value = data.dataBody.key;
+      searchWord.value = data.dataBody.word;
+    }, (error) => {
+      console.log(error);
+    }
+  )
+}
+
+
+onBeforeMount(() => {
+  getPlanList(
+    currentPage.value,
+    pageSize.value,
+    searchKey.value,
+    searchWord.value
+  );
+});
 </script>
 
 <template>
@@ -86,6 +88,9 @@ onBeforeMount(() => {});
               hide-details
               v-model="searchWord"
               clearable
+              @click:appendInner="
+                getPlanList(1, pageSize, searchKey, searchWord)
+              "
             ></v-text-field>
           </v-container>
           <v-container class="pa-0 d-flex justify-end align-end">
@@ -120,6 +125,7 @@ onBeforeMount(() => {});
               class="mt-3 mb-10"
               :length="totalPage"
               show-first-last-page="true"
+              @click="getPlanList(currentPage, pageSize, searchKey, searchWord)"
               v-model="currentPage"
             ></v-pagination>
           </v-container>
