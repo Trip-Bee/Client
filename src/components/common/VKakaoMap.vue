@@ -7,7 +7,6 @@ const markers = ref([]);
 const props = defineProps({
   spotPositions: Array,
   height: Number,
-  width: Number,
 });
 
 // watch로는 잘 안됨...
@@ -77,7 +76,6 @@ onMounted(() => {
     }`;
     document.head.appendChild(script);
   }
-  console.log(props.width);
 });
 </script>
 

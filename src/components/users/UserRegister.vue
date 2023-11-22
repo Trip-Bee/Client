@@ -75,7 +75,7 @@ const signup = async () => {
 
   if (isSignup.value) {
     alert("회원가입을 성공하였습니다.");
-    router.push({ name: "main" });
+    router.push({ name: "user-login" });
   } else {
     alert("회원가입을 실패하였습니다.");
   }
