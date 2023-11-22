@@ -4,10 +4,18 @@ import PlanSpotList from "../plan/item/PlanSpotList.vue";
 
 const plan = ref({
   title: "",
-  headCount: 0,
+  headCount: 1,
   start: new Date(),
   end: new Date(),
+  theme: "",
 });
+
+const duration = computed(() => {
+  return getDiff(plan.value.start, plan.value.end);
+});
+console.log(duration.value);
+
+// const duration = ref(1);
 
 watch(plan.value, (newValue, oldValue) => {
   console.log(`start ${plan.value.start}`);
@@ -44,11 +52,13 @@ const getDiff = () => {
               :counter="30"
               label="Title"
               variant="solo"
+              v-model="plan.title"
             ></v-text-field>
             <v-text-field
               label="인원수"
               variant="solo"
               type="Number"
+              v-model="plan.headCount"
             ></v-text-field>
             <div class="d-flex justify-space-evenly">
               <v-date-picker
@@ -81,6 +91,7 @@ const getDiff = () => {
                 :counter="30"
                 label="Theme"
                 variant="solo"
+                v-model="plan.theme"
               ></v-text-field>
             </div>
           </v-card>
