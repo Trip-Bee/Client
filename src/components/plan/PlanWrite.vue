@@ -1,14 +1,6 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import SpotList from "../spot/SpotList.vue";
-
-const getDiff = (start, end) => {
-  const diffDate = end.getTime() - start.getTime();
-
-  // 시작일 변경하지 않을 경우 시작일의 시간이 현재시간이므로 소수가 나온다.
-  // 소수에 대한 처리를 해줘야 한다.
-  return Math.ceil(Math.abs(diffDate / (1000 * 60 * 60 * 24))) + 1; // 밀리세컨 * 초 * 분 * 시 = 일
-};
+import { ref, watch } from "vue";
+import PlanSpotList from "../plan/item/PlanSpotList.vue";
 
 const plan = ref({
   title: "",
@@ -28,28 +20,34 @@ console.log(duration.value);
 watch(plan.value, (newValue, oldValue) => {
   console.log(`start ${plan.value.start}`);
   console.log(`end ${plan.value.end}`);
-  console.log("watch in", plan.value);
-  //   duration = getDiff(plan.value.start, plan.value.end);
-  //   console.log(duration);
-  console.log(duration.value);
+  getDiff();
 });
 
-// let duration = getDiff(plan.value.start, plan.value.end);
-console.log(duration);
+const items = ref([]);
+const tab = ref(null);
+const tabItems = ref([]);
+const totalDate = ref();
+
+const getDiff = () => {
+  const diffDate = plan.value.end.getTime() - plan.value.start.getTime();
+  totalDate.value = Math.abs(diffDate / (1000 * 60 * 60 * 24)) + 1;
+  console.log(totalDate.value);
+};
+
+// const load = async () => {
+//   const res = await this.api();
+// };
 </script>
 
 <template>
   <v-container class="pa-0 pt-1 d-flex">
-    <!-- <v-sheet
-      class="d-flex flex-wrap justify-center pt-8 pb-14"
-      :elevation="2"
-      border
-      rounded
-    > -->
-    <v-stepper :items="['여행정보입력', '여행일정추가', '미리보기']" class="w-100">
+    <v-stepper
+      :items="['여행정보입력', '여행일정추가', '미리보기']"
+      class="w-100"
+    >
       <template v-slot:[`item.1`]>
         <div class="d-flex flex-wrap justify-center">
-          <v-card class="w-85" title="여행정보입력" flat>
+          <v-card class="w-85" flat>
             <v-text-field
               :counter="30"
               label="Title"
@@ -69,6 +67,7 @@ console.log(duration);
                 color="#424242"
                 elevation="4"
                 show-adjacent-months
+                :min="new Date()"
                 header="시작일"
                 title="title"
                 hide-header
@@ -100,21 +99,51 @@ console.log(duration);
       </template>
 
       <template v-slot:[`item.2`]>
-        <v-card title="여행일정추가" flat>
-          <SpotList class="w-80"></SpotList>
-          <v-container class="pa-0"></v-container>
+        <v-card flat>
+          <div class="d-flex flex-wrap justify-center">
+            <PlanSpotList class="w-69"></PlanSpotList>
+            <v-sheet class="w-31">
+              <v-card class="pa-2 border rounded" elevation="3">
+                <v-tabs
+                  v-model="tab"
+                  bg-color="#424242"
+                  color="white"
+                  class="border"
+                >
+                  <div v-for="(n, index) in totalDate" :key="index">
+                    <v-tab :value="n">{{ n }}일차</v-tab>
+                  </div>
+                </v-tabs>
+
+                <v-card-text>
+                  <v-window v-model="tab">
+                    <div v-for="(n, index) in totalDate" :key="index">
+                      <v-window-item :value="n">{{ n }}일차 </v-window-item>
+                    </div>
+                  </v-window>
+                </v-card-text>
+              </v-card>
+            </v-sheet>
+          </div>
         </v-card>
       </template>
 
       <template v-slot:[`item.3`]>
-        <v-card title="미리보기" flat></v-card>
+        <v-card flat></v-card>
       </template>
     </v-stepper>
-    <!-- </v-sheet> -->
   </v-container>
 </template>
 
 <style scoped>
+.w-31 {
+  width: 30%;
+}
+
+.w-69 {
+  width: 67%;
+}
+
 .w-80 {
   width: 80%;
 }

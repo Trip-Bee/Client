@@ -33,6 +33,7 @@ import {
   mdiCardTextOutline,
   mdiClose,
   mdiHeart,
+  mdiPlusThick,
 } from "@mdi/js";
 
 const vuetify = createVuetify({
@@ -60,6 +61,7 @@ const vuetify = createVuetify({
       card: mdiCardTextOutline,
       close: mdiClose,
       heart: mdiHeart,
+      plus: mdiPlusThick,
     },
     sets: {
       mdi,
