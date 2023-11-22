@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, defineProps, defineEmits } from "vue";
 import VKakaoMap from "../../common/VKakaoMap.vue";
 import { useRouter } from "vue-router";
 import {
@@ -13,6 +13,12 @@ onMounted(() => {
   getSido();
   getSpotType();
 });
+
+const props = defineProps({
+  tab: {
+    type: Number
+  }
+})
 
 const router = useRouter();
 
@@ -147,6 +153,21 @@ const clickItem = (index) => {
     },
   });
 };
+
+const emit = defineEmits(['addPlanDetail']);
+const addPlanDetail = (item, detailIndex) => {
+  emit('emitPlanDetail',
+    {
+      tab: props.tab,
+      detailIndex: detailIndex,
+      spotId: item.id,
+      title: item.title,
+      image: item.image != ''
+        ? item.image
+        : '../src/assets/img/profile.png',
+      addr: item.addr
+    });
+}
 </script>
 
 <template>
@@ -272,6 +293,8 @@ const clickItem = (index) => {
                   <v-list-subheader class="font-weight-bold"
                     >Spot</v-list-subheader
                   >
+
+
                   <v-list-item
                     class="text-truncate"
                     v-for="(item, index) in spotItems"
@@ -290,9 +313,10 @@ const clickItem = (index) => {
                         color="#424242"
                         icon="$plus"
                         variant="text"
-                        @click=""
+                        @click="emitPlanDetail(item, index)"
                       ></v-btn> </template
                   ></v-list-item>
+
                 </v-list>
               </v-card>
               <v-pagination
