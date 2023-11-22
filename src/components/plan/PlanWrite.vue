@@ -38,7 +38,16 @@ const getVehicles = () => {
   );
 };
 
-const items = ref([1, 2, 3]);
+const items = ref([
+  [],
+  [{ title: "1 test1" }, { title: "1 test2" }],
+  [{ title: "2 test1" }, { title: "2 test2" }],
+  [{ title: "3 test1" }, { title: "3 test2" }],
+]);
+
+watch(tab, (newValue, oldValue) => {
+  console.log(tab.value);
+});
 </script>
 
 <template>
@@ -127,10 +136,11 @@ const items = ref([1, 2, 3]);
                           >
                           <v-virtual-scroll
                             :height="620"
-                            :items="items"
+                            :items="items[n]"
                             item-height="200"
                           >
-                            <template v-slot:default="{ item }">
+                            <template v-slot:default="{ item, index }">
+                              {{ item.title }} {{ index }}
                               <v-card class="border ma-2" hover>
                                 <v-img
                                   class="border ma-2 rounded elevation-2"
