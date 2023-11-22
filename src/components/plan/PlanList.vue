@@ -33,12 +33,12 @@ const getPlanList = (page, size, key, word) => {
       pageSize.value = data.dataBody.size;
       searchKey.value = data.dataBody.key;
       searchWord.value = data.dataBody.word;
-    }, (error) => {
+    },
+    (error) => {
       console.log(error);
     }
-  )
-}
-
+  );
+};
 
 onBeforeMount(() => {
   getPlanList(
@@ -124,8 +124,8 @@ onBeforeMount(() => {
             <v-pagination
               class="mt-3 mb-10"
               :length="totalPage"
-              show-first-last-page="true"
               @click="getPlanList(currentPage, pageSize, searchKey, searchWord)"
+              :show-first-last-page="true"
               v-model="currentPage"
             ></v-pagination>
           </v-container>

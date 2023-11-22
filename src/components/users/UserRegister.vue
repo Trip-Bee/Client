@@ -15,6 +15,8 @@ const signupUser = ref({
   passwordCheck: "",
 });
 
+const visible = ref(false);
+
 const signup = async () => {
   // signup.password === signup.passwordCheck
   let user = signupUser.value;
@@ -35,7 +37,10 @@ const signup = async () => {
   console.log("signup", isSignup.value);
 
   if (isSignup.value) {
+    alert("회원가입을 성공하였습니다.");
     router.push({ name: "main" });
+  } else {
+    alert("회원가입을 실패하였습니다.");
   }
 };
 </script>

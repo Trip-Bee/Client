@@ -299,7 +299,7 @@ const clickItem = (index) => {
               <v-pagination
                 class="mt-3 mb-6"
                 :length="totalPage"
-                show-first-last-page="true"
+                :show-first-last-page="true"
                 @click="
                   spotSearch(
                     currentPage,

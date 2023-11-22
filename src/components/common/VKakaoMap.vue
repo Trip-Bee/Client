@@ -10,8 +10,6 @@ const props = defineProps({
   width: Number,
 });
 
-console.log(props.height);
-
 // watch로는 잘 안됨...
 onUpdated(() => {
   console.log("spotPositions updated?");
@@ -79,19 +77,20 @@ onMounted(() => {
     }`;
     document.head.appendChild(script);
   }
+  console.log(props.width);
 });
 </script>
 
 <template>
-  <div
+  <v-container
     id="map"
     class="pa-0"
-    :style="{ height: height + 'px', width: width + 'px' }"
-  ></div>
+    :style="{ height: height + 'px' }"
+  ></v-container>
 </template>
 
 <style scoped>
 #map {
-  width: 100%;
+  aspect-ratio: "16/9";
 }
 </style>

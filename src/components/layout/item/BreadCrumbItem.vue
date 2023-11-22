@@ -2,7 +2,7 @@
 import { ref, defineProps } from "vue";
 
 const props = defineProps({
-  breadcrumbs: String,
+  breadcrumbs: Array,
 });
 </script>
 

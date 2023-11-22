@@ -10,16 +10,7 @@ const plan = ref({
   theme: "",
 });
 
-const duration = computed(() => {
-  return getDiff(plan.value.start, plan.value.end);
-});
-console.log(duration.value);
-
-// const duration = ref(1);
-
 watch(plan.value, (newValue, oldValue) => {
-  console.log(`start ${plan.value.start}`);
-  console.log(`end ${plan.value.end}`);
   getDiff();
 });
 
@@ -30,8 +21,8 @@ const totalDate = ref();
 
 const getDiff = () => {
   const diffDate = plan.value.end.getTime() - plan.value.start.getTime();
-  totalDate.value = Math.abs(diffDate / (1000 * 60 * 60 * 24)) + 1;
-  console.log(totalDate.value);
+  totalDate.value = Math.ceil(Math.abs(diffDate / (1000 * 60 * 60 * 24))) + 1;
+  console.log(`totalDate ${totalDate.value}`);
 };
 
 // const load = async () => {
