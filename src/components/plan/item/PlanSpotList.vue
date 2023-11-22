@@ -1,13 +1,13 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
-import VKakaoMap from "../common/VKakaoMap.vue";
+import VKakaoMap from "../../common/VKakaoMap.vue";
 import { useRouter } from "vue-router";
 import {
   getSidoList,
   getGugunList,
   getSpotTypList,
   search,
-} from "../../api/spot.js";
+} from "../../../api/spot.js";
 
 onMounted(() => {
   getSido();
@@ -252,12 +252,13 @@ const clickItem = (index) => {
         elevation="2"
         rounded="md"
       >
-        <v-row>
+        <v-row class="d-flex flex-column">
           <v-col cols="5">
             <v-sheet class="ms-2 me-1 border">
               <VKakaoMap
                 :spotPositions="spotPositions"
-                :height="550"
+                :height="300"
+                :width="644"
               ></VKakaoMap>
             </v-sheet>
           </v-col>
@@ -284,12 +285,11 @@ const clickItem = (index) => {
                     :title="item.title"
                     :subtitle="item.addr"
                     elevation="2"
-                    @click="clickItem(index)"
                   >
                     <template v-slot:append>
                       <v-btn
-                        color="red"
-                        icon="$heart"
+                        color="gray"
+                        icon="$plus"
                         variant="text"
                         @click=""
                       ></v-btn> </template
@@ -297,7 +297,7 @@ const clickItem = (index) => {
                 </v-list>
               </v-card>
               <v-pagination
-                class="mt-3 mb-6"
+                class="mt-1 mb-6"
                 :length="totalPage"
                 show-first-last-page="true"
                 @click="

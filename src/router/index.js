@@ -3,6 +3,15 @@ import TheMainView from "@/views/TheMainView.vue";
 import { useMemberStore } from "../stores/member";
 import { storeToRefs } from "pinia";
 
+import TheSpotView from "@/views/TheSpotView.vue";
+import SpotList from "@/components/spot/SpotList.vue";
+import SpotDetail from "@/components/spot/SpotDetail.vue";
+
+import ThePlanView from "@/views/ThePlanView.vue";
+import PlanList from "@/components/plan/PlanList.vue";
+import PlanDetail from "@/components/plan/PlanDetail.vue";
+import PlanWrite from "@/components/plan/PlanWrite.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -141,41 +150,41 @@ const router = createRouter({
     {
       path: "/spot",
       name: "spot",
-      component: () => import("@/views/TheSpotView.vue"),
+      component: () => TheSpotView,
       redirect: { name: "spot-list" },
       children: [
         {
           path: "list",
           name: "spot-list",
-          component: () => import("@/components/spot/SpotList.vue"),
+          component: () => SpotList,
         },
         {
           path: "view/:id",
           name: "spot-view",
-          component: () => import("@/components/spot/SpotDetail.vue"),
+          component: () => SpotDetail,
         },
       ],
     },
     {
       path: "/plan",
       name: "plan",
-      component: () => import("@/views/ThePlanView.vue"),
+      component: () => ThePlanView,
       redirect: { name: "plan-list" },
       children: [
         {
           path: "list",
           name: "plan-list",
-          component: () => import("@/components/plan/PlanList.vue"),
+          component: () => PlanList,
         },
         {
           path: "view/:id",
           name: "plan-view",
-          component: () => import("@/components/plan/PlanDetail.vue"),
+          component: () => PlanDetail,
         },
         {
           path: "write",
           name: "plan-write",
-          component: () => import("@/components/plan/PlanWrite.vue"),
+          component: () => PlanWrite,
         },
       ],
     },

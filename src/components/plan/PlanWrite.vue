@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
-import SpotList from "../spot/SpotList.vue";
+import PlanSpotList from "../plan/item/PlanSpotList.vue";
 
 const plan = ref({
   title: "",
@@ -12,25 +12,34 @@ const plan = ref({
 watch(plan.value, (newValue, oldValue) => {
   console.log(`start ${plan.value.start}`);
   console.log(`end ${plan.value.end}`);
-  console.log(this);
+  getDiff();
 });
+
+const items = ref([]);
+const tab = ref(null);
+const tabItems = ref([]);
+const totalDate = ref();
+
+const getDiff = () => {
+  const diffDate = plan.value.end.getTime() - plan.value.start.getTime();
+  totalDate.value = Math.abs(diffDate / (1000 * 60 * 60 * 24)) + 1;
+  console.log(totalDate.value);
+};
+
+// const load = async () => {
+//   const res = await this.api();
+// };
 </script>
 
 <template>
   <v-container class="pa-0 pt-1 d-flex">
-    <!-- <v-sheet
-      class="d-flex flex-wrap justify-center pt-8 pb-14"
-      :elevation="2"
-      border
-      rounded
-    > -->
     <v-stepper
       :items="['여행정보입력', '여행일정추가', '미리보기']"
       class="w-100"
     >
       <template v-slot:[`item.1`]>
         <div class="d-flex flex-wrap justify-center">
-          <v-card class="w-85" title="여행정보입력" flat>
+          <v-card class="w-85" flat>
             <v-text-field
               :counter="30"
               label="Title"
@@ -48,6 +57,7 @@ watch(plan.value, (newValue, oldValue) => {
                 color="#424242"
                 elevation="4"
                 show-adjacent-months
+                :min="new Date()"
                 header="시작일"
                 title="title"
                 hide-header
@@ -78,21 +88,51 @@ watch(plan.value, (newValue, oldValue) => {
       </template>
 
       <template v-slot:[`item.2`]>
-        <v-card title="여행일정추가" flat>
-          <SpotList class="w-80"></SpotList>
-          <v-container class="pa-0"></v-container>
+        <v-card flat>
+          <div class="d-flex flex-wrap justify-center">
+            <PlanSpotList class="w-69"></PlanSpotList>
+            <v-sheet class="w-31">
+              <v-card class="pa-2 border rounded" elevation="3">
+                <v-tabs
+                  v-model="tab"
+                  bg-color="#424242"
+                  color="white"
+                  class="border"
+                >
+                  <div v-for="(n, index) in totalDate" :key="index">
+                    <v-tab :value="n">{{ n }}일차</v-tab>
+                  </div>
+                </v-tabs>
+
+                <v-card-text>
+                  <v-window v-model="tab">
+                    <div v-for="(n, index) in totalDate" :key="index">
+                      <v-window-item :value="n">{{ n }}일차 </v-window-item>
+                    </div>
+                  </v-window>
+                </v-card-text>
+              </v-card>
+            </v-sheet>
+          </div>
         </v-card>
       </template>
 
       <template v-slot:[`item.3`]>
-        <v-card title="미리보기" flat></v-card>
+        <v-card flat></v-card>
       </template>
     </v-stepper>
-    <!-- </v-sheet> -->
   </v-container>
 </template>
 
 <style scoped>
+.w-31 {
+  width: 30%;
+}
+
+.w-69 {
+  width: 67%;
+}
+
 .w-80 {
   width: 80%;
 }
