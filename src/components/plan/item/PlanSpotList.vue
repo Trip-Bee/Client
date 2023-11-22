@@ -287,7 +287,7 @@ const clickItem = (index) => {
                   >
                     <template v-slot:append>
                       <v-btn
-                        color="gray"
+                        color="#424242"
                         icon="$plus"
                         variant="text"
                         @click=""
