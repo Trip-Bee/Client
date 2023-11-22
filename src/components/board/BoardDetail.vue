@@ -141,7 +141,7 @@ const comments = ref([]);
         </div>
         <div class="mb-8 d-flex justify-end">
           <v-card-action>
-            <div v-if="userInfo != null && userInfo.jti == board.writerId">
+            <div v-if="userInfo != null && userInfo.id == board.writerId">
               <v-btn
                 class="font-weight-black me-2"
                 variant="outlined"
