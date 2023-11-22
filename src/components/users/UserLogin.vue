@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
 import { useMenuStore } from "@/stores/menu";
 import { useCookies } from "vue3-cookies";
+import { useField, useForm } from "vee-validate";
 
 const { cookies } = useCookies();
 const router = useRouter();
@@ -25,7 +26,12 @@ const loginUser = ref({
 const visible = ref(false);
 
 const login = async () => {
+  console.log(`email ${email.value.value} password ${password.value.value}`);
   console.log("loginUser", loginUser.value);
+
+  loginUser.value.email = email.value.value;
+  loginUser.value.password = password.value.value;
+
   await userLogin(loginUser.value);
   //   let token = cookies.get("accessToken");
   let token = getAccessToken();
@@ -47,6 +53,25 @@ const handlePasswordEmail = async () => {
   // 이메일 입력받는 페이지로 이동
   router.push({ name: "email" });
 };
+
+const { handleSubmit } = useForm({
+  validationSchema: {
+    email(value) {
+      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+      return "이메일을 입력하세요.";
+    },
+    password(value) {
+      if (value > 0) return true;
+      return "비밀번호를 입력하세요.";
+    },
+  },
+});
+const email = useField("email");
+const password = useField("password");
+
+const submit = handleSubmit(() => {
+  login();
+});
 </script>
 
 <template>
@@ -71,7 +96,8 @@ const handlePasswordEmail = async () => {
         </div>
 
         <v-text-field
-          v-model="loginUser.email"
+          v-model="email.value.value"
+          :error-messages="email.errorMessage.value"
           density="compact"
           placeholder="Email address"
           prepend-inner-icon="$email"
@@ -82,19 +108,21 @@ const handlePasswordEmail = async () => {
           class="text-subtitle-1 text-large-emphasis font-weight-medium d-flex align-center justify-space-between"
         >
           비밀번호
-
-          <a
-            class="text-caption text-decoration-none text-blue"
-            @click.prevent="handlePasswordEmail"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            비밀번호 찾기</a
-          >
+          <v-hover>
+            <a
+              class="text-caption text-decoration-none text-blue password-link"
+              @click.prevent="handlePasswordEmail"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              비밀번호 찾기</a
+            >
+          </v-hover>
         </div>
 
         <v-text-field
-          v-model="loginUser.password"
+          v-model="password.value.value"
+          :error-messages="password.errorMessage.value"
           :append-inner-icon="visible ? '$eyeOff' : '$eye'"
           :type="visible ? 'text' : 'password'"
           density="compact"
@@ -110,7 +138,7 @@ const handlePasswordEmail = async () => {
           color="#424242"
           size="large"
           variant="elevated"
-          @click.prevent="login"
+          @click.prevent="submit"
         >
           로그인
         </v-btn>
@@ -119,4 +147,8 @@ const handlePasswordEmail = async () => {
   </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.password-link {
+  cursor: pointer;
+}
+</style>
