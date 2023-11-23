@@ -126,7 +126,7 @@ const handleUpdateUser = async () => {
           prepend-inner-icon="$lock"
           variant="solo"
           @click:append-inner="visible = !visible"
-          readonly
+          :readonly="click"
         ></v-text-field>
 
         <div

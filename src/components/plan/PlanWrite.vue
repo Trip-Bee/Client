@@ -82,7 +82,7 @@ const data = ref({
   image: null, // 장소 이미지
   addr: null, // 장소 주소
   order: null, // 배열에서 순서 >> 해당 일차의 상세계획에서 순서
-  vehicle: null,
+  vehicle: 8,
   cost: 0,
 });
 
@@ -193,10 +193,10 @@ const handleAddPlan = () => {
       inputData.value.order = planDetails.value[i][j].order;
       inputData.value.dateOrder = planDetails.value[i][j].tab;
       inputData.value.cost = planDetails.value[i][j].cost;
-        totalCost += parseInt(inputData.value.cost);
+      totalCost += parseInt(inputData.value.cost);
 
-        console.log('totalCost type?', typeof totalCost);
-        console.log('cost type?', typeof parseInt(inputData.value.cost));
+      console.log("totalCost type?", typeof totalCost);
+      console.log("cost type?", typeof parseInt(inputData.value.cost));
 
       const newData = ref({ ...inputData.value });
       console.log("newData", newData.value);
@@ -223,7 +223,7 @@ const handleAddPlan = () => {
       planDetails: details.value,
     },
     (response) => {
-      router.push({ name: "main" });
+      router.push({ name: "plan-list" });
     },
     (error) => {
       console.log(error);
@@ -240,7 +240,10 @@ onMounted(() => {
 
 <template>
   <v-container class="pa-0 pt-1 d-flex">
-    <v-stepper :items="['여행정보입력', '여행일정추가', '미리보기']" class="w-100">
+    <v-stepper
+      :items="['여행정보입력', '여행일정추가', '미리보기']"
+      class="w-100"
+    >
       <!-- 1번째 단계, plan입력받는 곳 -->
       <template v-slot:[`item.1`]>
         <div class="d-flex flex-wrap justify-center">
@@ -300,11 +303,20 @@ onMounted(() => {
         <v-card flat>
           <div class="d-flex flex-wrap justify-center">
             <!-- plan 에서 지도 검색 -->
-            <PlanSpotList class="w-69" :tab="tab" @emitPlanDetail="addPlanDetail"></PlanSpotList>
+            <PlanSpotList
+              class="w-69"
+              :tab="tab"
+              @emitPlanDetail="addPlanDetail"
+            ></PlanSpotList>
 
             <v-sheet class="w-31">
               <v-card class="pa-2 border rounded" elevation="2">
-                <v-tabs v-model="tab" bg-color="#424242" color="white" class="border">
+                <v-tabs
+                  v-model="tab"
+                  bg-color="#424242"
+                  color="white"
+                  class="border"
+                >
                   <div v-for="(n, index) in totalDate" :key="n">
                     <v-tab :value="n">{{ n }}일차</v-tab>
                   </div>
@@ -315,10 +327,15 @@ onMounted(() => {
                     <div v-for="(n, index) in totalDate" :key="n">
                       <v-window-item :value="n">
                         <v-card>
-                          <v-card-title class="font-weight-bold pa-0">{{ n }}일차</v-card-title>
-                          <v-virtual-scroll :height="620" :items="planDetails[n]" item-height="200">
+                          <v-card-title class="font-weight-bold pa-0"
+                            >{{ n }}일차</v-card-title
+                          >
+                          <v-virtual-scroll
+                            :height="620"
+                            :items="planDetails[n]"
+                            item-height="200"
+                          >
                             <template v-slot:default="{ item, index }">
-                              {{ item.title }}
                               <!-- 카드 1개 PlanDetails 정보가 담겨있음 -->
                               <v-card class="border ma-2" hover>
                                 <v-img
@@ -330,14 +347,17 @@ onMounted(() => {
                                 <v-card-title class="pa-0 ps-4 pe-4 pb-2">{{
                                   item.title
                                 }}</v-card-title>
-                                <v-card-subtitl class="pa-0 ps-4 pe-4">{{
-                                  item.addr
-                                }}</v-card-subtitl>
+                                <v-card-subtitle
+                                  class="pa-0 ps-4 pe-4 text-start"
+                                  >{{ item.addr }}</v-card-subtitle
+                                >
 
                                 <v-card-text class="pa-0 ps-4 pe-4 pt-2">
                                   <div>
                                     <v-divider></v-divider>
-                                    <div class="font-weight-bold mt-1">교통수단</div>
+                                    <div class="font-weight-bold mt-1">
+                                      교통수단
+                                    </div>
                                     <div class="px-4 mb-1">
                                       <!-- click? v-model -->
                                       <v-chip-group v-model="item.vehicle">
@@ -357,7 +377,9 @@ onMounted(() => {
                                     </div>
                                     <v-divider></v-divider>
                                     <div class="px-4 mb-2">
-                                      <div class="font-weight-bold mt-1 mb-1">비용</div>
+                                      <div class="font-weight-bold mt-1 mb-1">
+                                        비용
+                                      </div>
                                       <v-text-field
                                         class="ms-1 me-1 pa-1 text-subtitle-1 font-weight-medium"
                                         variant="outlined"
@@ -371,9 +393,15 @@ onMounted(() => {
                                     <v-divider></v-divider>
                                   </div>
                                 </v-card-text>
-                                <v-card-action class="d-flex justify-space-between align-center">
+                                <v-card-action
+                                  class="d-flex justify-space-between align-center"
+                                >
                                   <div class="ms-2">
-                                    <v-icon class="me-1 ms-2" icon="$heart" color="red"></v-icon>
+                                    <v-icon
+                                      class="me-1 ms-2"
+                                      icon="$heart"
+                                      color="red"
+                                    ></v-icon>
                                     <span class="subheading me-2">256</span>
                                   </div>
                                   <v-btn
@@ -398,10 +426,201 @@ onMounted(() => {
         </v-card>
       </template>
 
+      <!-- 3단계 -->
       <template v-slot:[`item.3`]>
-        <v-card flat>
-          <button @click="handleAddPlan">완료</button>
-        </v-card>
+        <v-container class="pa-0 d-flex justify-center">
+          <v-sheet class="pa-0 w-75">
+            <v-card flat>
+              <v-container
+                class="pa-0 mt-4 mb-4 d-flex flex-wrap justify-space-between"
+              >
+                <div class="w-69 border">
+                  <v-card
+                    class="pa-2 border rounded d-flex flex-row"
+                    elevation="2"
+                  >
+                    <v-tabs
+                      direction="vertical"
+                      v-model="tab"
+                      bg-color="#424242"
+                      color="white"
+                      class="border"
+                    >
+                      <div v-for="(n, index) in totalDate" :key="n">
+                        <v-tab :value="n">{{ n }}일차</v-tab>
+                      </div>
+                    </v-tabs>
+
+                    <v-card-text>
+                      <v-window v-model="tab">
+                        <div v-for="(n, index) in totalDate" :key="n">
+                          <v-window-item :value="n">
+                            <v-card>
+                              <v-card-title class="font-weight-bold pa-0"
+                                >{{ n }}일차</v-card-title
+                              >
+                              <v-virtual-scroll
+                                :height="620"
+                                :items="planDetails[n]"
+                                item-height="200"
+                              >
+                                <template v-slot:default="{ item, index }">
+                                  <!-- 카드 1개 PlanDetails 정보가 담겨있음 -->
+                                  <v-card class="border ma-2" hover>
+                                    <v-img
+                                      class="border ma-2 rounded elevation-2"
+                                      :height="120"
+                                      aspect-ratio="16/9"
+                                      :src="item.image"
+                                    ></v-img>
+                                    <v-card-title
+                                      class="pa-0 ps-4 pe-4 pb-2 font-weight-bold"
+                                      >{{ item.title }}</v-card-title
+                                    >
+                                    <v-card-subtitle
+                                      class="pa-0 ps-4 pe-4 text-start"
+                                      >{{ item.addr }}</v-card-subtitle
+                                    >
+
+                                    <v-card-text class="pa-0 ps-4 pe-4 pt-2">
+                                      <div>
+                                        <v-divider></v-divider>
+                                        <div class="font-weight-bold mt-1">
+                                          교통수단
+                                        </div>
+                                        <div class="mb-1">
+                                          <!-- click? v-model -->
+                                          <v-chip-group v-model="item.vehicle">
+                                            <v-chip
+                                              variant="outlined"
+                                              elevation="1"
+                                              size="x-small"
+                                              mandatory
+                                              rounded
+                                              selected-class="text-primary"
+                                              v-for="vehicle in vehicles"
+                                              :key="vehicle.id"
+                                              :value="vehicle.id"
+                                              >{{ vehicle.name }}</v-chip
+                                            >
+                                          </v-chip-group>
+                                        </div>
+                                        <v-divider></v-divider>
+                                        <div class="mb-2">
+                                          <div
+                                            class="font-weight-bold mt-1 mb-1"
+                                          >
+                                            비용
+                                          </div>
+                                          <v-text-field
+                                            class="ms-1 me-1 pa-1 text-subtitle-1 font-weight-medium"
+                                            variant="outlined"
+                                            type="Number"
+                                            hide-details
+                                            rounded
+                                            density="compact"
+                                            v-model="item.cost"
+                                          ></v-text-field>
+                                        </div>
+                                        <v-divider></v-divider>
+                                      </div>
+                                    </v-card-text>
+                                    <v-card-action
+                                      class="d-flex justify-space-between align-center"
+                                    >
+                                      <div class="ms-2">
+                                        <v-icon
+                                          class="me-1 ms-2"
+                                          icon="$heart"
+                                          color="red"
+                                        ></v-icon>
+                                        <span class="subheading me-2">256</span>
+                                      </div>
+                                      <v-btn
+                                        color="#424242"
+                                        class="me-1"
+                                        icon="$minus"
+                                        variant="text"
+                                        @click=""
+                                      ></v-btn>
+                                    </v-card-action>
+                                  </v-card>
+                                </template>
+                              </v-virtual-scroll>
+                            </v-card>
+                          </v-window-item>
+                        </div>
+                      </v-window>
+                    </v-card-text>
+                  </v-card>
+                </div>
+                <div class="w-31 border">
+                  <v-window v-model="tab">
+                    <div v-for="(n, index) in totalDate" :key="n">
+                      <v-window-item :value="n">
+                        <v-card class="pt-6 ps-4 pe-4 pb-6">
+                          <v-card-title class="font-weight-bold pa-0"
+                            >{{ n }}일차</v-card-title
+                          >
+                          <v-card-subtitle
+                            >{{ n }}일차 여행 계획
+                          </v-card-subtitle>
+                          <v-card-item>
+                            <div class="font-weight-bold mt-1 mb-1">
+                              계획 개수
+                            </div>
+                            <v-text-field
+                              class="ms-1 me-1 pa-1 text-subtitle-1 font-weight-medium"
+                              variant="outlined"
+                              type="Number"
+                              hide-details
+                              rounded
+                              density="compact"
+                              readonly
+                              :value="planDetails[n].length"
+                            ></v-text-field>
+                            <div class="font-weight-bold mt-1 mb-1">
+                              전체 비용
+                            </div>
+                            <v-text-field
+                              class="ms-1 me-1 pa-1 text-subtitle-1 font-weight-medium"
+                              variant="outlined"
+                              type="Number"
+                              hide-details
+                              rounded
+                              density="compact"
+                              readonly
+                              :value="
+                                planDetails[n]
+                                  .map((detail) => parseInt(detail.cost))
+                                  .reduce((prev, curr) => prev + curr, 0)
+                              "
+                            ></v-text-field>
+                          </v-card-item>
+                        </v-card>
+                      </v-window-item>
+                    </div>
+                  </v-window>
+                </div>
+              </v-container>
+
+              <v-divider class="mt-4 mb-4"></v-divider>
+              <v-row>
+                <v-col class="text-end">
+                  <v-btn
+                    class="font-weight-black"
+                    variant="outlined"
+                    rounded="md"
+                    color="#757575"
+                    @click="handleAddPlan"
+                  >
+                    완료
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-sheet>
+        </v-container>
       </template>
     </v-stepper>
   </v-container>
