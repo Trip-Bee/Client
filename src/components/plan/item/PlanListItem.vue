@@ -20,7 +20,7 @@ const props = defineProps({
     <td class="text-center">{{ plan.startDate }}</td>
     <td class="text-center">{{ plan.endDate }}</td>
     <td class="text-center">{{ plan.hit }}</td>
-    <td class="text-center">{{ plan.createdAt }}</td>
+    <td class="text-center">{{ plan.createdAt.split("T")[0] }}</td>
   </tr>
 </template>
 

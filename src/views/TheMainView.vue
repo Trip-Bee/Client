@@ -1,6 +1,46 @@
 <script setup>
+import { ref, onMounted } from "vue";
 import BreadCrumbItem from "../components/layout/item/BreadCrumbItem.vue";
 import MainCarousel from "../components/main/MainCarousel.vue";
+import { top10Plan } from "../api/plan.js";
+import { top10Spot } from "../api/spot.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const plans = ref([]);
+const spots = ref([]);
+
+onMounted(() => {
+  getTop10Plan();
+  getTop10Spot();
+});
+
+const getTop10Plan = () => {
+  top10Plan(
+    {},
+    ({ data }) => {
+      console.log(data);
+      plans.value = data.dataBody;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const getTop10Spot = () => {
+  top10Spot(
+    {},
+    ({ data }) => {
+      spots.value = data.dataBody;
+      console.log(spots.value);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 </script>
 
 <template>
@@ -13,7 +53,7 @@ import MainCarousel from "../components/main/MainCarousel.vue";
         <p class="">여행지 Top 10</p>
       </div>
       <v-slide-group v-model="model" class="pa-4">
-        <v-slide-group-item v-for="n in 10" :key="n">
+        <v-slide-group-item v-for="spot in spots" :key="spot.spotId">
           <v-hover>
             <template v-slot:default="{ isHovering, props }">
               <v-card
@@ -25,10 +65,12 @@ import MainCarousel from "../components/main/MainCarousel.vue";
                 elevation="6"
                 hover
               >
-                <v-img src="../../src/assets/img/default.png"></v-img>
+                <v-img :src="spot.image"></v-img>
                 <v-divider class="mt-1 mb-1 border-opacity-50"></v-divider>
-                <v-card-title>TItle</v-card-title>
-                <v-card-subtitle class="text-truncate">Addr</v-card-subtitle>
+                <v-card-title>{{ spot.title }}</v-card-title>
+                <v-card-subtitle class="text-truncate">{{
+                  spot.addr
+                }}</v-card-subtitle>
               </v-card>
             </template>
           </v-hover>
@@ -43,7 +85,7 @@ import MainCarousel from "../components/main/MainCarousel.vue";
         <p class="">계획 Top 10</p>
       </div>
       <v-slide-group v-model="model" class="pa-4">
-        <v-slide-group-item v-for="n in 10" :key="n">
+        <v-slide-group-item v-for="plan in plans" :key="plan.planId">
           <v-hover>
             <template v-slot:default="{ isHovering, props }">
               <v-card
@@ -54,11 +96,19 @@ import MainCarousel from "../components/main/MainCarousel.vue";
                 width="210"
                 elevation="6"
                 hover
+                @click.prevent="
+                  router.push({
+                    name: 'plan-view',
+                    params: { id: plan.planId },
+                  })
+                "
               >
                 <v-img src="../../src/assets/img/default.png"></v-img>
                 <v-divider class="mt-1 mb-1 border-opacity-50"></v-divider>
-                <v-card-title>TItle</v-card-title>
-                <v-card-subtitle class="text-truncate">Addr</v-card-subtitle>
+                <v-card-title>{{ plan.title }}</v-card-title>
+                <v-card-subtitle class="text-truncate"
+                  >조회수 : {{ plan.hit }}</v-card-subtitle
+                >
               </v-card>
             </template>
           </v-hover>
