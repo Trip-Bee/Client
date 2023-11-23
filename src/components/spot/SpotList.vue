@@ -9,6 +9,11 @@ import {
   search,
 } from "../../api/spot.js";
 import { addOrdeleteLike, countLike } from "../../api/like.js";
+import { useMemberStore } from "../../stores/member";
+
+const memberStore = useMemberStore();
+const { getAccessToken, getUserId } = memberStore;
+const token = getAccessToken();
 
 onMounted(() => {
   getSido();
@@ -150,16 +155,21 @@ const clickItem = (index) => {
 };
 
 const clickLike = (id) => {
-  const param = {
-    spotId: id,
-  };
-  addOrdeleteLike(
-    param,
-    ({ data }) => {},
-    (error) => {
-      console.log(error);
-    }
-  );
+  if (token == "Bearer null") {
+    alert("로그인이 필요합니다.");
+    router.push({ name: "user-login" });
+  } else {
+    const param = {
+      spotId: id,
+    };
+    addOrdeleteLike(
+      param,
+      ({ data }) => {},
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 };
 
 const count = () => {};
@@ -299,6 +309,7 @@ const count = () => {};
                     "
                     elevation="2"
                   >
+                    {{ item.isLike }}
                     <div class="pointer" @click="clickItem(index)">
                       <v-list-item-title>{{ item.title }}</v-list-item-title>
                       <v-list-item-subtitle>{{
@@ -310,7 +321,7 @@ const count = () => {};
                         <v-btn
                           size="smal"
                           class="pa-0 ma-0"
-                          :color="red"
+                          :color="item.isLike ? red : black"
                           icon="$heart"
                           variant="text"
                           @click.prevent="clickLike(item.id)"

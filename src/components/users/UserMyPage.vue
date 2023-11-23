@@ -46,6 +46,7 @@ const handleUpdateUser = async () => {
         const token = getAccessToken();
         await getUserInfo(token);
         alert("회원 정보가 변경되었습니다.");
+        click.value = true;
       },
       (error) => {
         console.log(error);
@@ -72,6 +73,18 @@ const handleUpdateUser = async () => {
           >마이페이지</v-card-title
         >
 
+        <v-alert
+          variant="outlined"
+          class="font-weight-bold"
+          type="info"
+          title="알림"
+          :text="
+            click
+              ? '수정 버튼을 눌러 회원 정보를 수정할 수 있습니다.'
+              : '수정할 회원정보를 입력해주세요.'
+          "
+        ></v-alert>
+        <v-divider class="mt-4 mb-6"></v-divider>
         <div class="text-subtitle-1 text-large-emphasis font-weight-medium">
           닉네임
         </div>
@@ -113,29 +126,24 @@ const handleUpdateUser = async () => {
           prepend-inner-icon="$lock"
           variant="solo"
           @click:append-inner="visible = !visible"
-          :readonly="click"
+          readonly
         ></v-text-field>
 
         <div
           class="text-subtitle-1 text-large-emphasis font-weight-medium d-flex align-center justify-space-between"
         >
-          비밀번호 확인
+          프로필 이미지
         </div>
-
-        <v-text-field
-          v-model="updateUser.passwordCheck"
-          :append-inner-icon="visible ? '$eyeOff' : '$eye'"
-          :type="visible ? 'text' : 'password'"
+        <v-file-input
+          clearable
+          label="File input"
           density="compact"
-          placeholder="Enter your password"
-          prepend-inner-icon="$lock"
-          variant="solo"
-          @click:append-inner="visible = !visible"
           :readonly="click"
-        ></v-text-field>
+        ></v-file-input>
+
         <v-container class="pa-0 d-flex justify-space-between">
           <v-btn
-            class="join-btn mt-4 mb-16 font-weight-bold"
+            class="btn mt-4 mb-16 font-weight-bold"
             color="#424242"
             variant="elevated"
             @click.prevent="handleUpdateUser"
@@ -144,7 +152,7 @@ const handleUpdateUser = async () => {
           </v-btn>
 
           <v-btn
-            class="reset-btn mt-4 mb-16 font-weight-bold"
+            class="btn mt-4 mb-16 font-weight-bold"
             color="#424242"
             variant="elevated"
             @click="
@@ -161,4 +169,8 @@ const handleUpdateUser = async () => {
   </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.btn {
+  width: 48%;
+}
+</style>
