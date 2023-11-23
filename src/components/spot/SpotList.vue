@@ -1,13 +1,8 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, nextTick } from "vue";
 import VKakaoMap from "../common/VKakaoMap.vue";
 import { useRouter } from "vue-router";
-import {
-  getSidoList,
-  getGugunList,
-  getSpotTypList,
-  search,
-} from "../../api/spot.js";
+import { getSidoList, getGugunList, getSpotTypList, search } from "../../api/spot.js";
 import { addOrdeleteLike, countLike } from "../../api/like.js";
 import { useMemberStore } from "../../stores/member";
 
@@ -109,7 +104,7 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
       spotTypeCode.value = type;
       query.value = input;
 
-      console.log("spotItems", data.dataBody.data);
+      console.log("spotItems", spotItems.value);
 
       // spotItems.forEach((element) => {
       //   spotPositions.push({
@@ -154,17 +149,30 @@ const clickItem = (index) => {
   });
 };
 
-const clickLike = (id) => {
+const clickLike = (item) => {
+  console.log(item);
   if (token == "Bearer null") {
     alert("로그인이 필요합니다.");
     router.push({ name: "user-login" });
   } else {
     const param = {
-      spotId: id,
+      spotId: item.id,
     };
     addOrdeleteLike(
       param,
-      ({ data }) => {},
+      ({ data }) => {
+        // addOrdeleteLike의 반환값을 true, false가 되도록 변경
+        // 반환받은 값으로 spotItems의 isLike 변경
+        item.isLike = data.dataBody.isLike;
+        item.likeCount = data.dataBody.likeCount;
+        console.log("data.dataBody", data.dataBody);
+        console.log("item?", item);
+        // $nextTick;
+        nextTick(() => {
+          // DOM 업데이트 후 실행되는 로직
+          console.log("DOM 업데이트가 완료되었습니다.");
+        });
+      },
       (error) => {
         console.log(error);
       }
@@ -177,25 +185,14 @@ const count = () => {};
 
 <template>
   <v-container class="pa-0 pt-1">
-    <v-sheet
-      class="d-flex flex-wrap justify-center"
-      :elevation="2"
-      border
-      rounded
-    >
+    <v-sheet class="d-flex flex-wrap justify-center" :elevation="2" border rounded>
       <v-expansion-panels>
         <v-expansion-panel class="elevation-2">
-          <v-expansion-panel-title
-            class="font-weight-bold"
-            text-color="white"
-            color="#424242"
-          >
+          <v-expansion-panel-title class="font-weight-bold" text-color="white" color="#424242">
             검색
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-container
-              class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-90 elevation-2 rounded"
-            >
+            <v-container class="border pa-0 ps-4 pe-4 pt-5 pb-5 w-90 elevation-2 rounded">
               <v-row>
                 <v-col>
                   <v-select
@@ -233,11 +230,7 @@ const count = () => {};
                       class="justify-center"
                       v-model="spotTypeCode"
                     >
-                      <v-chip
-                        v-for="item in spotTypeItems"
-                        :key="item.id"
-                        :value="item.id"
-                      >
+                      <v-chip v-for="item in spotTypeItems" :key="item.id" :value="item.id">
                         {{ item.name }}
                       </v-chip>
                     </v-chip-group>
@@ -256,14 +249,7 @@ const count = () => {};
                     v-model="query"
                     clearable
                     @click:appendInner="
-                      spotSearch(
-                        1,
-                        pageSize,
-                        sidoCode,
-                        gugunCode,
-                        spotTypeCode,
-                        query
-                      )
+                      spotSearch(1, pageSize, sidoCode, gugunCode, spotTypeCode, query)
                     "
                   ></v-text-field
                 ></v-col>
@@ -273,60 +259,43 @@ const count = () => {};
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <v-card
-        class="mx-auto ps-4 pe-4 pt-4 pb-3 w-90 mt-14 mb-16"
-        elevation="2"
-        rounded="md"
-      >
+      <v-card class="mx-auto ps-4 pe-4 pt-4 pb-3 w-90 mt-14 mb-16" elevation="2" rounded="md">
         <v-row>
           <v-col cols="5">
             <v-sheet class="ms-2 me-1 border">
-              <VKakaoMap
-                :spotPositions="spotPositions"
-                :height="550"
-              ></VKakaoMap>
+              <VKakaoMap :spotPositions="spotPositions" :height="550"></VKakaoMap>
             </v-sheet>
           </v-col>
           <v-col
             ><v-sheet class="ms-1 me-2 border">
-              <v-card
-                class="ps-16 pe-16 pt-6 pb-6 mt-2 mb-6"
-                elevation="2"
-                rounded="md"
-              >
+              <v-card class="ps-16 pe-16 pt-6 pb-6 mt-2 mb-6" elevation="2" rounded="md">
                 <v-list lines="three">
-                  <v-list-subheader class="font-weight-bold"
-                    >Spot</v-list-subheader
-                  >
+                  <v-list-subheader class="font-weight-bold">Spot</v-list-subheader>
                   <v-list-item
                     class="text-truncate"
                     v-for="(item, index) in spotItems"
                     :key="item.id"
                     :prepend-avatar="
-                      item.image != ''
-                        ? item.image
-                        : '../src/assets/img/profile.png'
+                      item.image != '' ? item.image : '../src/assets/img/profile.png'
                     "
                     elevation="2"
                   >
-                    {{ item.isLike }}
                     <div class="pointer" @click="clickItem(index)">
                       <v-list-item-title>{{ item.title }}</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                        item.addr
-                      }}</v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ item.addr }}</v-list-item-subtitle>
                     </div>
                     <template v-slot:append>
                       <v-card-action class="pa-0 ma-0">
                         <v-btn
                           size="smal"
                           class="pa-0 ma-0"
-                          :color="item.isLike ? red : black"
+                          :color="item.isLike ? 'red' : 'black'"
                           icon="$heart"
                           variant="text"
-                          @click.prevent="clickLike(item.id)"
+                          @click.prevent="clickLike(item)"
                         ></v-btn>
-                        25
+                        {{ item.isLIke }}
+                        {{ item.likeCount }}
                       </v-card-action></template
                     ></v-list-item
                   >
@@ -336,16 +305,7 @@ const count = () => {};
                 class="mt-3 mb-6"
                 :length="totalPage"
                 :show-first-last-page="true"
-                @click="
-                  spotSearch(
-                    currentPage,
-                    pageSize,
-                    sidoCode,
-                    gugunCode,
-                    spotTypeCode,
-                    query
-                  )
-                "
+                @click="spotSearch(currentPage, pageSize, sidoCode, gugunCode, spotTypeCode, query)"
                 v-model="currentPage"
               ></v-pagination></v-sheet
           ></v-col>
