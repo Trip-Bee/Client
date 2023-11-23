@@ -1,14 +1,15 @@
 <script setup>
-import { ref, defineProps } from "vue";
-
-const props = defineProps({
-  breadcrumbs: Array,
-});
+import { useBreadcrumbsStore } from "../../../stores/breadcrumbs";
+const breadcrumbsStore = useBreadcrumbsStore();
+const breadcrumbs = breadcrumbsStore.breadcrumbs;
+const previousBreadcrumbs = breadcrumbsStore.previousBreadcrumbs;
+console.log(breadcrumbs);
+console.log(previousBreadcrumbs);
 </script>
 
 <template>
   <v-container class="border pa-0 elevation-2 rounded ps-4">
-    <v-breadcrumbs class="pa-2 text-caption" :items="breadcrumbs">
+    <v-breadcrumbs :items="breadcrumbs">
       <template v-slot:divider>
         <v-icon icon="$chevronRight"></v-icon>
       </template>
