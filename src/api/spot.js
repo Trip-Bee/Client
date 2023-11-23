@@ -1,6 +1,8 @@
 import { localAxios } from "@/util/http-commons";
+import { useCookies } from "vue3-cookies";
 
 const local = localAxios();
+const { cookies } = useCookies();
 
 function getSidoList(param, success, fail) {
   local.get(`/area/sido`).then(success).catch(fail);
@@ -22,6 +24,20 @@ function getSpotTypList(param, success, fail) {
 }
 
 function search(param, success, fail) {
+  // 특정 조건을 확인하고 그에 따라 헤더를 동적으로 결정
+  // const shouldAddCustomHeader = true; // 특정 조건에 따라 수정
+  // const customHeaderValue = "your-custom-value";
+
+  // const headers = {};
+
+  // if (shouldAddCustomHeader) {
+  //   headers["Custom-Header"] = customHeaderValue;
+  // }
+
+  const token = cookies.get("accessToken");
+  const accessToken = token === null ? null : `Bearer ${token}`;
+  console.log("search accessToken", accessToken);
+  local.defaults.headers["Authorization"] = accessToken;
   local
     .get(`/spot`, {
       params: {
