@@ -228,7 +228,7 @@ const router = createRouter({
           name: "spot-list",
           component: () => SpotList,
           meta: {
-            breadcrumb: "List",
+            breadcrumb: "Search",
           },
         },
         {

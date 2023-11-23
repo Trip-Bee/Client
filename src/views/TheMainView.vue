@@ -6,7 +6,7 @@ import MainCarousel from "../components/main/MainCarousel.vue";
 <template>
   <!-- <BreadCrumbItem></BreadCrumbItem> -->
   <MainCarousel class="w-100"></MainCarousel>
-  <v-divider class="mt-3 mb-4"></v-divider>
+  <v-divider class="mt-3 mb-4 border-opacity-75"></v-divider>
   <v-container class="pa-0 mb-4">
     <v-sheet class="mx-auto" elevation="4">
       <div class="pt-6 text-h5 font-weight-bold text-center">
@@ -18,7 +18,7 @@ import MainCarousel from "../components/main/MainCarousel.vue";
             <template v-slot:default="{ isHovering, props }">
               <v-card
                 v-bind="props"
-                :color="isHovering ? '#283241' : undefined"
+                :color="isHovering ? '#283A4E' : undefined"
                 :class="['ma-4']"
                 height="300"
                 width="210"
@@ -36,6 +36,7 @@ import MainCarousel from "../components/main/MainCarousel.vue";
       </v-slide-group>
     </v-sheet>
   </v-container>
+  <v-divider class="mt-3 mb-4 border-opacity-75"></v-divider>
   <v-container class="pa-0 mb-4">
     <v-sheet class="mx-auto" elevation="4">
       <div class="pt-6 text-h5 font-weight-bold text-center">
@@ -47,7 +48,7 @@ import MainCarousel from "../components/main/MainCarousel.vue";
             <template v-slot:default="{ isHovering, props }">
               <v-card
                 v-bind="props"
-                :color="isHovering ? '#283241' : undefined"
+                :color="isHovering ? '#283A4E' : undefined"
                 :class="['ma-4']"
                 height="300"
                 width="210"

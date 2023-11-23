@@ -50,7 +50,7 @@ const getDiff = (start, end) => {
 <template>
   <v-container class="pa-0 pt-1">
     <v-sheet
-      class="d-flex flex-wrap justify-center pb-14"
+      class="d-flex flex-wrap justify-center"
       :elevation="2"
       border
       rounded

@@ -25,7 +25,7 @@ const navItems = ref([
 </script>
 
 <template>
-  <div class="nav mt-6 elevation-2 rounded mb-6">
+  <div class="nav mt-6 elevation-4 rounded mb-6">
     <v-row>
       <v-col class="d-flex justify-space-between">
         <div>
