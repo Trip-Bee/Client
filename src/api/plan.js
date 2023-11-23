@@ -1,10 +1,8 @@
 import { localAxios, simpleAxios } from "@/util/http-commons";
-import { useMemberStore } from "../stores/member";
+import { useMemberStore } from "@/stores/member";
 
 const local = localAxios();
 const simple = simpleAxios();
-// const memberStore = useMemberStore();
-// const { getAccessToken, getUserId } = memberStore;
 
 function listPlan(param, success, fail) {
   simple
@@ -19,4 +17,13 @@ function listVehicle(param, success, fail) {
   simple.get(`/vehicles`).then(success).catch(fail);
 }
 
-export { listPlan, listVehicle };
+function addPlans(param, success, fail) {
+  const memberStore = useMemberStore();
+  const { getAccessToken } = memberStore;
+  const accessToken = getAccessToken();
+
+  local.defaults.headers["Authorization"] = accessToken;
+  local.post(`/plans`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+export { listPlan, listVehicle, addPlans };

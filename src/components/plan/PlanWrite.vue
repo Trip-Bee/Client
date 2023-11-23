@@ -1,7 +1,15 @@
 <script setup>
 import { ref, watch, onMounted, onUpdated } from "vue";
 import PlanSpotList from "../plan/item/PlanSpotList.vue";
-import { listVehicle } from "../../api/plan.js";
+import { listVehicle, addPlans } from "../../api/plan.js";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+
+const router = useRouter();
+const memberStore = useMemberStore();
+const { getAccessToken, getUserInfo } = memberStore;
+const { userInfo } = storeToRefs(memberStore);
 
 const plan = ref({
   title: "",
@@ -10,6 +18,8 @@ const plan = ref({
   end: new Date(),
   theme: "",
 });
+
+console.log("userInfo", userInfo.value);
 
 const vehicles = ref([]);
 
@@ -82,6 +92,32 @@ const data = ref({
 // vehicle: null,
 // cost: null
 
+///////////////// 아래랑 비교
+// import { toRefs } from 'vue';
+
+// // ...
+
+// const { data: reactiveData } = toRefs(data);
+
+// const addPlanDetail = (args) => {
+//   console.log("args", args);
+//   reactiveData.tab = args.tab;
+//   reactiveData.spotId = args.spotId;
+//   reactiveData.title = args.title;
+//   reactiveData.image = args.image;
+//   reactiveData.addr = args.addr;
+
+//   reactiveData.order = planDetails.value[reactiveData.tab].length;
+//   console.log("reactiveData", reactiveData);
+
+//   const newData = { ...reactiveData };
+//   console.log("newData", newData);
+
+//   planDetails.value[newData.tab].push(newData);
+//   console.log("planDetails 배열", planDetails.value);
+//   console.log("planDetails배열의 배열", planDetails.value[1]);
+// };
+
 // emit으로 데이터 받아서 planDetails[tab] 에 넣기
 const addPlanDetail = (args) => {
   console.log("args", args);
@@ -102,6 +138,7 @@ const addPlanDetail = (args) => {
   // planDetails.value[newData.value.tab].push(newData);
 
   console.log("planDetails 배열", planDetails.value);
+  console.log("planDetails배열의 배열", planDetails.value[1]);
 };
 
 watch(planDetails.value, (newValue, oldValue) => {
@@ -129,7 +166,71 @@ watch(planDetails.value, (newValue, oldValue) => {
 //   });
 // };
 
+const handleAddPlan = () => {
+  // planDetails 데이터 변환해서 넣기
+  let totalCost = 0;
+  const details = ref([]);
+  const inputData = ref({
+    spotId: null,
+    vehicleId: null,
+    order: null,
+    dateOrder: null,
+    cost: null,
+  });
+  // planDetails 를 idx 1부터 반복문 돌리기
+  // inputData에 값넣고 inputData를 복사해서 배열에 넣기
+  for (let i = 1; i <= totalDate.value; i++) {
+    // 각 일차별로 planDetails를 돌면서 내부의 값을 details 배열에 넣기
+    // ?일차 일정 배열
+    planDetails.value[i];
+    if (planDetails.value[i].length === 0) {
+      continue;
+    }
+
+    for (let j = 0; j < planDetails.value[i].length; j++) {
+      inputData.value.spotId = planDetails.value[i][j].spotId;
+      inputData.value.vehicleId = planDetails.value[i][j].vehicle;
+      inputData.value.order = planDetails.value[i][j].order;
+      inputData.value.dateOrder = planDetails.value[i][j].tab;
+      inputData.value.cost = planDetails.value[i][j].cost;
+      totalCost += inputData.value.cost;
+
+      const newData = ref({ ...inputData.value });
+      console.log("newData", newData.value);
+      details.value.push(newData.value);
+    }
+    // details.value[i] = planDetails.value[i].map((item, index) => ({
+    //   spotId: item.spotId,
+    //   vehicleId: item.vehicle,
+    //   order: index,
+    //   dateOrder: i,
+    //   cost: item.cost,
+    // }));
+  }
+  // 배열의 cost를 이용하여 totalCost 계산
+  addPlans(
+    {
+      writerId: userInfo.value.id,
+      title: plan.value.title,
+      totalCost: totalCost,
+      startDate: plan.value.start,
+      endDate: plan.value.end,
+      headCount: plan.value.headCount,
+      theme: plan.value.theme,
+      planDetails: details.value,
+    },
+    (response) => {
+      router.push({ name: "main" });
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
 onMounted(() => {
+  //   const token = getAccessToken();
+  //   getUserInfo(token);
   getDiff(); // totalDate 계산
   getVehicles(); // 교통수단 목록조회
   initializePlanDetails(); // PlanDetails 배열을 totalDate + 1로 초기화
@@ -297,7 +398,9 @@ onMounted(() => {
       </template>
 
       <template v-slot:[`item.3`]>
-        <v-card flat></v-card>
+        <v-card flat>
+          <button @click="handleAddPlan">완료</button>
+        </v-card>
       </template>
     </v-stepper>
   </v-container>
