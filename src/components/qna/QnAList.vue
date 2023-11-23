@@ -5,7 +5,7 @@ import PostList from "../common/PostList.vue";
 import { useMemberStore } from "../../stores/member";
 
 const memberStore = useMemberStore();
-const { isAuthenticated } = memberStore;
+const { isAuthenticated, userInfo } = memberStore;
 
 const posts = ref([]);
 
@@ -58,13 +58,13 @@ const getPostList = (page, size, key, word) => {
 <template>
   <v-container class="pa-0 pt-1">
     <v-sheet
-      class="d-flex flex-wrap justify-center pt-8 pb-14"
+      class="d-flex flex-wrap justify-center pt-6 pb-6"
       :elevation="2"
       border
       rounded
     >
       <v-card
-        class="mx-auto ps-16 pe-16 pt-10 pb-3 w-75 mt-14 mb-16"
+        class="mx-auto ps-16 pe-16 pt-10 pb-3 w-75 mt-10 mb-10"
         elevation="2"
         rounded="md"
       >
@@ -99,22 +99,24 @@ const getPostList = (page, size, key, word) => {
             ></v-text-field>
           </v-container>
           <v-container class="pa-0 d-flex justify-end align-end">
-            <div
-              :class="{
-                notVisible: !isAuthenticated,
-                visible: isAuthenticated,
-              }"
-            >
-              <router-link :to="{ name: 'qna-write' }" tag="v-btn"
-                ><v-btn
-                  class="font-weight-black"
-                  variant="outlined"
-                  rounded="md"
-                  color="#757575"
-                  elevation="1"
-                  >글쓰기</v-btn
-                ></router-link
+            <div v-if="userInfo != null">
+              <div
+                :class="{
+                  notVisible: !isAuthenticated,
+                  visible: isAuthenticated,
+                }"
               >
+                <router-link :to="{ name: 'qna-write' }" tag="v-btn"
+                  ><v-btn
+                    class="font-weight-black"
+                    variant="outlined"
+                    rounded="md"
+                    color="#757575"
+                    elevation="1"
+                    >글쓰기</v-btn
+                  ></router-link
+                >
+              </div>
             </div>
           </v-container>
           <v-container class="pa-0 pt-3">

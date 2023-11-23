@@ -5,7 +5,7 @@ import { useRoute } from "vue-router";
 import { useMemberStore } from "../../stores/member";
 
 const memberStore = useMemberStore();
-const { userInfo } = memberStore;
+const { isAuthentciated, userInfo } = memberStore;
 
 const route = useRoute();
 const reviews = ref([]);
@@ -72,8 +72,34 @@ const handleWriteBtn = () => {
     elevation="2"
     rounded="md"
   >
-    <div v-if="category == 'qna'">
-      <div v-if="userInfo != null && userInfo.role == 'ROLE_ADMIN'">
+    <div v-if="userInfo != null">
+      <div v-if="category == 'qna'">
+        <div v-if="userInfo != null && userInfo.role == 'ROLE_ADMIN'">
+          <v-textarea
+            v-model="commentContent"
+            label="Comment 작성"
+            class="font-weight-medium text-left"
+            variant="solo"
+            rows="5"
+            elevation="2"
+            no-resize
+            hide-details
+            clearable
+          ></v-textarea>
+          <div class="d-flex justify-end">
+            <v-btn
+              class="font-weight-black me-2 mt-2"
+              variant="outlined"
+              rounded="md"
+              color="success"
+              elevation="1"
+              @click="handleWriteBtn()"
+              >작성</v-btn
+            >
+          </div>
+        </div>
+      </div>
+      <div v-else>
         <v-textarea
           v-model="commentContent"
           label="Comment 작성"
@@ -98,30 +124,6 @@ const handleWriteBtn = () => {
         </div>
       </div>
     </div>
-    <div v-else>
-      <v-textarea
-        v-model="commentContent"
-        label="Comment 작성"
-        class="font-weight-medium text-left"
-        variant="solo"
-        rows="5"
-        elevation="2"
-        no-resize
-        hide-details
-        clearable
-      ></v-textarea>
-      <div class="d-flex justify-end">
-        <v-btn
-          class="font-weight-black me-2 mt-2"
-          variant="outlined"
-          rounded="md"
-          color="success"
-          elevation="1"
-          @click="handleWriteBtn()"
-          >작성</v-btn
-        >
-      </div>
-    </div>
     <v-list lines="three">
       <div v-if="category == 'qna'">
         <v-list-subheader class="font-weight-bold">Comment</v-list-subheader>
@@ -141,12 +143,13 @@ const handleWriteBtn = () => {
       >
         <v-list-subtitle>{{ review.content }}</v-list-subtitle>
         <template v-slot:append>
-          <v-btn
-            color="grey-lighten-1"
-            icon="$close"
-            variant="text"
-            @click="deleteBtn(review.id)"
-          ></v-btn> </template
+          <div v-if="userInfo != null && userInfo.id == review.writerId">
+            <v-btn
+              color="grey-lighten-1"
+              icon="$close"
+              variant="text"
+              @click="deleteBtn(review.id)"
+            ></v-btn></div></template
       ></v-list-item>
     </v-list>
   </v-card>

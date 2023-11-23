@@ -25,7 +25,7 @@ const { isAuthenticated } = storeToRefs(memberStore);
         <ProfileItem></ProfileItem>
       </div>
     </div>
-    <NavItem class="mt-8"></NavItem>
+    <NavItem class="mt-12"></NavItem>
   </v-container>
 </template>
 

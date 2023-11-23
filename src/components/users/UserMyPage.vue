@@ -59,7 +59,7 @@ const handleUpdateUser = async () => {
 <template>
   <v-container class="pa-0 pt-1">
     <v-sheet
-      class="d-flex flex-wrap justify-center pt-8 pb-14"
+      class="d-flex flex-wrap justify-center pt-6 pb-6"
       :elevation="2"
       border
       rounded

@@ -60,6 +60,7 @@ const handleDelete = () => {
   deletePost(
     param,
     ({ data }) => {
+      alert("Post가 삭제되었습니다.");
       router.replace({ name: "notice-list" });
     },
     (error) => {
@@ -91,13 +92,13 @@ const comments = ref([]);
 <template>
   <v-container class="pa-0 pt-1">
     <v-sheet
-      class="d-flex flex-wrap justify-center pt-8 pb-14"
+      class="d-flex flex-wrap justify-center pt-6 pb-6"
       :elevation="2"
       border
       rounded
     >
       <v-card
-        class="mx-auto pa-16 pb-3 w-75 mt-14 mb-2"
+        class="mx-auto pa-16 pb-3 w-75 mt-10 mb-2"
         elevation="2"
         rounded="md"
       >
@@ -139,6 +140,7 @@ const comments = ref([]);
             no-resize
           ></v-textarea>
         </div>
+        <div>조회수 : {{ notice.hit }}</div>
         <div class="mb-8 d-flex justify-end">
           <v-card-action>
             <div v-if="userInfo != null && userInfo.id == notice.writerId">

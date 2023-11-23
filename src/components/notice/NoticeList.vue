@@ -58,13 +58,13 @@ const getPostList = (page, size, key, word) => {
 <template>
   <v-container class="pa-0 pt-1">
     <v-sheet
-      class="d-flex flex-wrap justify-center pt-8 pb-14"
+      class="d-flex flex-wrap justify-center pt-6 pb-6"
       :elevation="2"
       border
       rounded
     >
       <v-card
-        class="mx-auto ps-16 pe-16 pt-10 pb-3 w-75 mt-14 mb-16"
+        class="mx-auto ps-16 pe-16 pt-10 pb-3 w-75 mt-10 mb-10"
         elevation="2"
         rounded="md"
       >
