@@ -63,7 +63,7 @@ onBeforeMount(() => {
       rounded
     >
       <v-card
-        class="mx-auto ps-10 pe-10 pt-10 pb-3 w-75 mt-10 mb-10"
+        class="mx-auto ps-6 pe-6 pt-10 pb-3 w-85 mt-10 mb-10"
         elevation="2"
         rounded="md"
       >
@@ -123,7 +123,7 @@ onBeforeMount(() => {
               <thead class="elevation-3">
                 <tr>
                   <th class="text-center text-white">ID</th>
-                  <th class="text-center text-white w-35">제목</th>
+                  <th class="text-center text-white w-25">제목</th>
                   <th class="text-center text-white">작성자</th>
                   <th class="text-center text-white">시작일</th>
                   <th class="text-center text-white">종료일</th>
@@ -175,5 +175,9 @@ th {
 }
 .visible {
   visibility: visible;
+}
+
+.w-85 {
+  width: 85%;
 }
 </style>

@@ -30,4 +30,8 @@ function detailPlan(param, success, fail) {
   local.get(`/plans/${param.planId}`).then(success).catch(fail);
 }
 
-export { listPlan, listVehicle, addPlans, detailPlan };
+function top10Plan(param, success, fail) {
+  local.get(`/plans/top10`).then(success).catch(fail);
+}
+
+export { listPlan, listVehicle, addPlans, detailPlan, top10Plan };

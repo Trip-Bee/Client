@@ -58,4 +58,15 @@ function detailSpot(param, success, fail) {
   local.get(`/spot/${param.id}`).then(success).catch(fail);
 }
 
-export { getSidoList, getGugunList, getSpotTypList, search, detailSpot };
+function top10Spot(param, success, fail) {
+  local.get(`/spot/top10`).then(success).catch(fail);
+}
+
+export {
+  getSidoList,
+  getGugunList,
+  getSpotTypList,
+  search,
+  detailSpot,
+  top10Spot,
+};
