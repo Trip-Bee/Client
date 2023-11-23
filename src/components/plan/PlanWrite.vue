@@ -193,7 +193,10 @@ const handleAddPlan = () => {
       inputData.value.order = planDetails.value[i][j].order;
       inputData.value.dateOrder = planDetails.value[i][j].tab;
       inputData.value.cost = planDetails.value[i][j].cost;
-      totalCost += inputData.value.cost;
+        totalCost += parseInt(inputData.value.cost);
+
+        console.log('totalCost type?', typeof totalCost);
+        console.log('cost type?', typeof parseInt(inputData.value.cost));
 
       const newData = ref({ ...inputData.value });
       console.log("newData", newData.value);
