@@ -8,6 +8,7 @@ import {
   getSpotTypList,
   search,
 } from "../../api/spot.js";
+import { addOrdeleteLike, countLike } from "../../api/like.js";
 
 onMounted(() => {
   getSido();
@@ -93,7 +94,7 @@ const spotSearch = (page, size, sido, gugun, type, input) => {
       query: input,
     },
     ({ data }) => {
-      console.log(data);
+      console.log("search", data);
       spotItems.value = data.dataBody.data;
       currentPage.value = data.dataBody.currentPage;
       totalPage.value = data.dataBody.totalPage;
@@ -147,6 +148,21 @@ const clickItem = (index) => {
     },
   });
 };
+
+const clickLike = (id) => {
+  const param = {
+    spotId: id,
+  };
+  addOrdeleteLike(
+    param,
+    ({ data }) => {},
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const count = () => {};
 </script>
 
 <template>
@@ -281,19 +297,28 @@ const clickItem = (index) => {
                         ? item.image
                         : '../src/assets/img/profile.png'
                     "
-                    :title="item.title"
-                    :subtitle="item.addr"
                     elevation="2"
-                    @click="clickItem(index)"
                   >
+                    <div class="pointer" @click="clickItem(index)">
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                      <v-list-item-subtitle>{{
+                        item.addr
+                      }}</v-list-item-subtitle>
+                    </div>
                     <template v-slot:append>
-                      <v-btn
-                        color="red"
-                        icon="$heart"
-                        variant="text"
-                        @click=""
-                      ></v-btn> </template
-                  ></v-list-item>
+                      <v-card-action class="pa-0 ma-0">
+                        <v-btn
+                          size="smal"
+                          class="pa-0 ma-0"
+                          :color="red"
+                          icon="$heart"
+                          variant="text"
+                          @click.prevent="clickLike(item.id)"
+                        ></v-btn>
+                        25
+                      </v-card-action></template
+                    ></v-list-item
+                  >
                 </v-list>
               </v-card>
               <v-pagination
@@ -334,5 +359,9 @@ const clickItem = (index) => {
 
 .w-90 {
   width: 90%;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>
