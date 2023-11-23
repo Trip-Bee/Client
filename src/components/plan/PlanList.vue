@@ -2,6 +2,10 @@
 import { ref, onBeforeMount } from "vue";
 import PlanListItem from "./item/PlanListItem.vue";
 import { listPlan } from "@/api/plan.js";
+import { useMemberStore } from "../../stores/member";
+
+const memberStore = useMemberStore();
+const { isAuthenticated } = memberStore;
 
 const plans = ref([]);
 
@@ -94,16 +98,23 @@ onBeforeMount(() => {
             ></v-text-field>
           </v-container>
           <v-container class="pa-0 d-flex justify-end align-end">
-            <router-link :to="{ name: 'plan-write' }" tag="v-btn"
-              ><v-btn
-                class="font-weight-black"
-                variant="outlined"
-                rounded="md"
-                color="#757575"
-                elevation="1"
-                >계획 작성</v-btn
-              ></router-link
+            <div
+              :class="{
+                notVisible: !isAuthenticated,
+                visible: isAuthenticated,
+              }"
             >
+              <router-link :to="{ name: 'plan-write' }" tag="v-btn"
+                ><v-btn
+                  class="font-weight-black"
+                  variant="outlined"
+                  rounded="md"
+                  color="#757575"
+                  elevation="1"
+                  >계획 작성</v-btn
+                ></router-link
+              >
+            </div>
           </v-container>
           <v-container class="pa-0 pt-3">
             <v-table hover="true">
@@ -114,6 +125,7 @@ onBeforeMount(() => {
                   <th class="text-center text-white">작성자</th>
                   <th class="text-center text-white">시작일</th>
                   <th class="text-center text-white">종료일</th>
+                  <th class="text-center text-white">조회수</th>
                   <th class="text-center text-white">작성일</th>
                 </tr>
               </thead>
@@ -154,5 +166,12 @@ th {
 
 .w-35 {
   width: 35%;
+}
+
+.notVisible {
+  visibility: hidden;
+}
+.visible {
+  visibility: visible;
 }
 </style>

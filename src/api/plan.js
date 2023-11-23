@@ -26,4 +26,8 @@ function addPlans(param, success, fail) {
   local.post(`/plans`, JSON.stringify(param)).then(success).catch(fail);
 }
 
-export { listPlan, listVehicle, addPlans };
+function detailPlan(param, success, fail) {
+  local.get(`/plans/${param.planId}`).then(success).catch(fail);
+}
+
+export { listPlan, listVehicle, addPlans, detailPlan };
