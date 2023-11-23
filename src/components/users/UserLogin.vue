@@ -57,7 +57,7 @@ const handlePasswordEmail = async () => {
 const { handleSubmit } = useForm({
   validationSchema: {
     email(value) {
-      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+      if (/^[a-z0-9.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
       return "이메일을 입력하세요.";
     },
     password(value) {
@@ -131,17 +131,25 @@ const submit = handleSubmit(() => {
           variant="solo"
           @click:append-inner="visible = !visible"
         ></v-text-field>
+        <v-container class="pa-0 d-flex justify-space-between">
+          <v-btn
+            class="login-btn mt-4 mb-16 font-weight-bold"
+            color="#424242"
+            variant="elevated"
+            @click.prevent="submit()"
+          >
+            로그인
+          </v-btn>
 
-        <v-btn
-          block
-          class="mt-4 mb-16 font-weight-bold"
-          color="#424242"
-          size="large"
-          variant="elevated"
-          @click.prevent="submit"
-        >
-          로그인
-        </v-btn>
+          <v-btn
+            class="join-btn mt-4 mb-16 font-weight-bold"
+            color="#424242"
+            variant="elevated"
+            @click.prevent="router.push({ name: 'user-signup' })"
+          >
+            회원가입
+          </v-btn>
+        </v-container>
       </v-card>
     </v-sheet>
   </v-container>
@@ -150,5 +158,13 @@ const submit = handleSubmit(() => {
 <style scoped>
 .password-link {
   cursor: pointer;
+}
+
+.join-btn {
+  width: 48%;
+}
+
+.login-btn {
+  width: 48%;
 }
 </style>

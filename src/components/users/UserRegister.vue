@@ -12,7 +12,7 @@ const { handleSubmit, handleReset } = useForm({
       return "닉네임을 입력하세요.";
     },
     email(value) {
-      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+      if (/^[a-z0-9.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
       return "이메일을 입력하세요.";
     },
     password(value) {
