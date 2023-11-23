@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onUpdated } from "vue";
+import { ref, watch, onMounted, toRefs } from "vue";
 import PlanSpotList from "../plan/item/PlanSpotList.vue";
 import { listVehicle, addPlans } from "../../api/plan.js";
 import { storeToRefs } from "pinia";
@@ -83,7 +83,7 @@ const data = ref({
   addr: null, // 장소 주소
   order: null, // 배열에서 순서 >> 해당 일차의 상세계획에서 순서
   vehicle: null,
-  cost: null,
+  cost: 0,
 });
 
 // index의 경우는?
@@ -175,7 +175,7 @@ const handleAddPlan = () => {
     vehicleId: null,
     order: null,
     dateOrder: null,
-    cost: null,
+    cost: 0,
   });
   // planDetails 를 idx 1부터 반복문 돌리기
   // inputData에 값넣고 inputData를 복사해서 배열에 넣기
@@ -229,8 +229,6 @@ const handleAddPlan = () => {
 };
 
 onMounted(() => {
-  //   const token = getAccessToken();
-  //   getUserInfo(token);
   getDiff(); // totalDate 계산
   getVehicles(); // 교통수단 목록조회
   initializePlanDetails(); // PlanDetails 배열을 totalDate + 1로 초기화
