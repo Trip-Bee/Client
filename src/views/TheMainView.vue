@@ -58,19 +58,37 @@ const getTop10Spot = () => {
             <template v-slot:default="{ isHovering, props }">
               <v-card
                 v-bind="props"
-                :color="isHovering ? '#283A4E' : undefined"
+                :color="isHovering ? '#424242' : undefined"
                 :class="['ma-4']"
                 height="300"
                 width="210"
                 elevation="6"
                 hover
+                @click.prevent="
+                  router.push({
+                    name: 'spot-view',
+                    params: { id: spot.spotId },
+                  })
+                "
               >
-                <v-img :src="spot.image"></v-img>
-                <v-divider class="mt-1 mb-1 border-opacity-50"></v-divider>
+                <v-img :src="spot.image" :height="140"></v-img>
+                <div class="mt-1"></div>
                 <v-card-title>{{ spot.title }}</v-card-title>
                 <v-card-subtitle class="text-truncate">{{
                   spot.addr
                 }}</v-card-subtitle>
+                <div class="mt-4">
+                  <v-card-action class="pa-0 ma-0 ms-4 mt-6">
+                    <v-btn
+                      size="smal"
+                      class="pa-0 ma-0"
+                      color="#EF5350"
+                      icon="$heart"
+                      variant="text"
+                    ></v-btn>
+                    {{ spot.likeCount }}
+                  </v-card-action>
+                </div>
               </v-card>
             </template>
           </v-hover>
@@ -90,7 +108,7 @@ const getTop10Spot = () => {
             <template v-slot:default="{ isHovering, props }">
               <v-card
                 v-bind="props"
-                :color="isHovering ? '#283A4E' : undefined"
+                :color="isHovering ? '#424242' : undefined"
                 :class="['ma-4']"
                 height="300"
                 width="210"
@@ -104,7 +122,7 @@ const getTop10Spot = () => {
                 "
               >
                 <v-img src="../../src/assets/img/default.png"></v-img>
-                <v-divider class="mt-1 mb-1 border-opacity-50"></v-divider>
+                <div class="mt-1"></div>
                 <v-card-title>{{ plan.title }}</v-card-title>
                 <v-card-subtitle class="text-truncate"
                   >조회수 : {{ plan.hit }}</v-card-subtitle

@@ -333,8 +333,8 @@ const count = () => {};
                         <v-btn
                           size="smal"
                           class="pa-0 ma-0"
-                          :color="item.isLike ? '#EF5350' : '#424242'"
-                          icon="$heart"
+                          color="#EF5350"
+                          :icon="item.isLike ? '$heart' : '$heartOutline'"
                           variant="text"
                           @click.prevent="clickLike(item)"
                         ></v-btn>

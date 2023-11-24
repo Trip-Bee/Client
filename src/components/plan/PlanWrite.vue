@@ -402,7 +402,9 @@ onMounted(() => {
                                       icon="$heart"
                                       color="red"
                                     ></v-icon>
-                                    <span class="subheading me-2">256</span>
+                                    <span class="subheading me-2">{{
+                                      item.isLike
+                                    }}</span>
                                   </div>
                                   <v-btn
                                     color="#424242"
